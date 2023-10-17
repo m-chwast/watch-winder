@@ -14,6 +14,14 @@ void Program_Init(void) {
 }
 
 void Program_Loop(void) {
-	HAL_Delay(4);
-	Motor_Step(MOTOR_DIR_CLOCKWISE);
+	static uint16_t cnt;
+	static Motor_Dir dir = MOTOR_DIR_CLOCKWISE;
+	cnt++;
+	if(cnt == 2048) {
+		cnt = 0;
+		dir = !dir;
+	}
+
+	HAL_Delay(2);
+	Motor_Step(dir);
 }
