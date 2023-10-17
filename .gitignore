@@ -1,0 +1,7 @@
+Debug
+Drivers
+Middlewares
+STM32F030F4PX_FLASH.ld
+STM32F030F4PX_RAM.ld
+flightsim-controller Debug.launch
+.mxproject
