@@ -14,6 +14,6 @@ void Program_Init(void) {
 }
 
 void Program_Loop(void) {
-	HAL_Delay(10);
+	HAL_Delay(4);
 	Motor_Step(MOTOR_DIR_CLOCKWISE);
 }
