@@ -25,25 +25,30 @@ static void MotorPinsWrite(uint32_t setMask) {
 void Motor_Step(Motor_Dir dir) {
 	static uint8_t state;
 
+	if(dir == MOTOR_DIR_CLOCKWISE) {
+		state >= 3 ? state = 0 : state++;
+	}
+	else {
+		state == 0 ? state = 3 : state--;
+
+	}
+
 	switch(state) {
 		case 0: {
-			MotorPinsWrite(MOTOR_OUT1_Pin);
+			MotorPinsWrite(MOTOR_OUT4_Pin | MOTOR_OUT1_Pin);
 			break;
 		}
 		case 1: {
-			MotorPinsWrite(MOTOR_OUT2_Pin);
+			MotorPinsWrite(MOTOR_OUT1_Pin | MOTOR_OUT2_Pin);
 			break;
 		}
 		case 2: {
-			MotorPinsWrite(MOTOR_OUT3_Pin);
+			MotorPinsWrite(MOTOR_OUT2_Pin | MOTOR_OUT3_Pin);
 			break;
 		}
 		case 3: {
-			MotorPinsWrite(MOTOR_OUT4_Pin);
+			MotorPinsWrite(MOTOR_OUT3_Pin | MOTOR_OUT4_Pin);
 			break;
 		}
 	}
-
-	state++;
-	state %= 4;
 }
