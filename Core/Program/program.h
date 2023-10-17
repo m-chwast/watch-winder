@@ -5,10 +5,10 @@
  *      Author: Mateusz Chwast
  */
 
-#ifndef INC_PROGRAM_H_
-#define INC_PROGRAM_H_
+#ifndef PROGRAM_PROGRAM_H_
+#define PROGRAM_PROGRAM_H_
 
 void Program_Init(void);
 void Program_Loop(void);
 
-#endif /* INC_PROGRAM_H_ */
+#endif /* PROGRAM_PROGRAM_H_ */

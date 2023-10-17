@@ -5,8 +5,8 @@
  *      Author: Mateusz Chwast
  */
 
-#ifndef INC_CONSOLE_H_
-#define INC_CONSOLE_H_
+#ifndef PROGRAM_CONSOLE_H_
+#define PROGRAM_CONSOLE_H_
 
 #include <stdint.h>
 
@@ -17,4 +17,4 @@ void Console_LogVal(const char* msg, int32_t val);
 void Console_LogValLn(const char* msg, int32_t val);
 
 
-#endif /* INC_CONSOLE_H_ */
+#endif /* PROGRAM_CONSOLE_H_ */
