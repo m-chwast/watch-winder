@@ -21,6 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "console.h"
 
 /* USER CODE END Includes */
 
@@ -97,7 +98,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	if(HAL_GetTick() % 2500 == 0) {
+		Console_LogLn("Ping!");
+		Console_LogValLn("Time: ", HAL_GetTick() / 1000);
+	}
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
