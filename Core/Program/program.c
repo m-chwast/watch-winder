@@ -6,11 +6,14 @@
  */
 
 #include "console.h"
+#include "motor.h"
+#include "main.h"
 
 void Program_Init(void) {
 	Console_LogLn("Init");
 }
 
 void Program_Loop(void) {
-
+	HAL_Delay(10);
+	Motor_Step(MOTOR_DIR_CLOCKWISE);
 }
