@@ -6,8 +6,14 @@
  */
 
 #include <assert.h>
+#include <stdbool.h>
 #include "motor.h"
 #include "main.h"
+
+//set only one mode to true
+#define DRIVE_WAVE false
+#define DRIVE_FULL_STEP true
+#define DRIVE_HALF_STEP false
 
 
 static void MotorPinsWrite(uint32_t setMask) {
@@ -23,6 +29,12 @@ static void MotorPinsWrite(uint32_t setMask) {
 }
 
 void Motor_Step(Motor_Dir dir) {
+	//assert correct mode selection
+	static_assert((DRIVE_WAVE && DRIVE_FULL_STEP) == false);
+	static_assert((DRIVE_WAVE && DRIVE_HALF_STEP) == false);
+	static_assert((DRIVE_FULL_STEP && DRIVE_HALF_STEP) == false);
+	static_assert(DRIVE_WAVE || DRIVE_FULL_STEP || DRIVE_HALF_STEP);
+
 	static uint8_t state;
 
 	if(dir == MOTOR_DIR_CLOCKWISE) {
