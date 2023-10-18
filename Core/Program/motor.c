@@ -22,6 +22,7 @@ struct Motor {
 	volatile uint32_t stepsLeft;
 	volatile Motor_Dir dir;
 	volatile bool isRunning;
+	volatile uint32_t stepsPeriodUs;
 } static motor;
 
 
@@ -38,12 +39,20 @@ void Motor_SetMovement(uint32_t degrees, Motor_Dir dir) {
 	Timers_Start(&TIMERS_MOTOR_TIMER);
 }
 
+void Motor_SetSpeed(uint8_t revPerMin) {
+	uint16_t period = (60 * 1000000) / (revPerMin * MOTOR_STEPS_PER_REVOLUTION);
+	motor.stepsPeriodUs = period;
+	Console_LogVal("Motor speed: ", revPerMin);
+	Console_LogLn(" rev/min");
+}
+
 bool Motor_IsRunning(void) {
 	return motor.isRunning;
 }
 
 void Motor_IRQHandler(void) {
 	if(motor.stepsLeft > 0) {
+		TIMERS_MOTOR_TIMER.Instance->CCR1 += motor.stepsPeriodUs;
 		Motor_Step(motor.dir);
 		motor.stepsLeft--;
 	}

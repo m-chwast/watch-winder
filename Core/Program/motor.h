@@ -35,6 +35,7 @@ typedef enum {
 
 void Motor_Step(Motor_Dir dir);
 void Motor_SetMovement(uint32_t degrees, Motor_Dir dir);
+void Motor_SetSpeed(uint8_t revPerMin);
 
 bool Motor_IsRunning(void);
 

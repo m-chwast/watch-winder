@@ -12,6 +12,7 @@
 
 void Program_Init(void) {
 	Console_LogLn("Init");
+	Motor_SetSpeed(6);
 }
 
 void Program_Loop(void) {
