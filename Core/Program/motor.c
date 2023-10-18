@@ -15,6 +15,9 @@
 #define DEGREES_TO_STEPS(DEG) ((DEG) * MOTOR_STEPS_PER_REVOLUTION / 360)
 
 
+static void MotorPinsWrite(uint32_t setMask);
+
+
 struct Motor {
 	volatile uint32_t stepsLeft;
 	volatile Motor_Dir dir;
@@ -39,17 +42,6 @@ bool Motor_IsRunning(void) {
 	return motor.isRunning;
 }
 
-static void MotorPinsWrite(uint32_t setMask) {
-	//if any assert fails, function needs modifications to work correctly
-	static_assert(MOTOR_OUT1_GPIO_Port == MOTOR_OUT2_GPIO_Port);
-	static_assert(MOTOR_OUT1_GPIO_Port == MOTOR_OUT3_GPIO_Port);
-	static_assert(MOTOR_OUT1_GPIO_Port == MOTOR_OUT4_GPIO_Port);
-
-	uint32_t resetMask = MOTOR_OUT1_Pin | MOTOR_OUT2_Pin | MOTOR_OUT3_Pin | MOTOR_OUT4_Pin;
-	resetMask &= ~(setMask);
-	HAL_GPIO_WritePin(MOTOR_OUT1_GPIO_Port, resetMask, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(MOTOR_OUT1_GPIO_Port, setMask, GPIO_PIN_SET);
-}
 
 void Motor_Step(Motor_Dir dir) {
 	//assert correct mode selection
@@ -143,4 +135,16 @@ void Motor_Step(Motor_Dir dir) {
 		}
 	}
 #endif
+}
+
+static void MotorPinsWrite(uint32_t setMask) {
+	//if any assert fails, function needs modifications to work correctly
+	static_assert(MOTOR_OUT1_GPIO_Port == MOTOR_OUT2_GPIO_Port);
+	static_assert(MOTOR_OUT1_GPIO_Port == MOTOR_OUT3_GPIO_Port);
+	static_assert(MOTOR_OUT1_GPIO_Port == MOTOR_OUT4_GPIO_Port);
+
+	uint32_t resetMask = MOTOR_OUT1_Pin | MOTOR_OUT2_Pin | MOTOR_OUT3_Pin | MOTOR_OUT4_Pin;
+	resetMask &= ~(setMask);
+	HAL_GPIO_WritePin(MOTOR_OUT1_GPIO_Port, resetMask, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(MOTOR_OUT1_GPIO_Port, setMask, GPIO_PIN_SET);
 }
