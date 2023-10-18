@@ -9,5 +9,7 @@
 #define PROGRAM_BUTTONS_H_
 
 
+void Buttons_Manage(void);
+
 
 #endif /* PROGRAM_BUTTONS_H_ */

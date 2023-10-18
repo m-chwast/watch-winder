@@ -5,9 +5,10 @@
  *      Author: Mateusz Chwast
  */
 
+#include "main.h"
 #include "console.h"
 #include "motor.h"
-#include "main.h"
+#include "buttons.h"
 
 
 void Program_Init(void) {
@@ -16,6 +17,7 @@ void Program_Init(void) {
 }
 
 void Program_Loop(void) {
+	/*
 	if(Motor_IsRunning()) {
 		return;
 	}
@@ -25,4 +27,7 @@ void Program_Loop(void) {
 
 	Motor_SetMovement(2 * 360, dir);
 	HAL_Delay(2000);
+	*/
+
+	Buttons_Manage();
 }
