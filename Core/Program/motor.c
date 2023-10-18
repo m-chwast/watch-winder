@@ -9,6 +9,7 @@
 #include "motor.h"
 #include "main.h"
 #include "console.h"
+#include "timers.h"
 
 
 #define DEGREES_TO_STEPS(DEG) ((DEG) * MOTOR_STEPS_PER_REVOLUTION / 360)
@@ -31,6 +32,7 @@ void Motor_SetMovement(uint32_t degrees, Motor_Dir dir) {
 	motor.dir = dir;
 	Console_LogValLn("Motor steps set to ", motor.stepsLeft);
 	motor.isRunning = true;
+	Timers_Start(&TIMERS_MOTOR_TIMER);
 }
 
 bool Motor_IsRunning(void) {

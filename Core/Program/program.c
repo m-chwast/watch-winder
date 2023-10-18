@@ -9,11 +9,9 @@
 #include "motor.h"
 #include "main.h"
 
-extern TIM_HandleTypeDef htim14;
 
 void Program_Init(void) {
 	Console_LogLn("Init");
-	HAL_TIM_Base_Start(&htim14);
 }
 
 void Program_Loop(void) {
