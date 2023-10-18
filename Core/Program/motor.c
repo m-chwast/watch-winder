@@ -12,8 +12,14 @@
 
 //set only one mode to true
 #define DRIVE_WAVE false
-#define DRIVE_FULL_STEP true
-#define DRIVE_HALF_STEP false
+#define DRIVE_FULL_STEP false
+#define DRIVE_HALF_STEP true
+
+#if !DRIVE_HALF_STEP
+#define FINAL_DRIVE_STEP (4 - 1)
+#else
+#define FINAL_DRIVE_STEP (8 - 1)
+#endif
 
 
 static void MotorPinsWrite(uint32_t setMask) {
@@ -38,11 +44,10 @@ void Motor_Step(Motor_Dir dir) {
 	static uint8_t state;
 
 	if(dir == MOTOR_DIR_CLOCKWISE) {
-		state >= 3 ? state = 0 : state++;
+		state >= FINAL_DRIVE_STEP ? state = 0 : state++;
 	}
 	else {
-		state == 0 ? state = 3 : state--;
-
+		state == 0 ? state = FINAL_DRIVE_STEP : state--;
 	}
 
 #if DRIVE_WAVE
@@ -86,6 +91,39 @@ void Motor_Step(Motor_Dir dir) {
 	}
 #endif
 #if DRIVE_HALF_STEP
-
+	switch(state) {
+		case 0: {
+			MotorPinsWrite(MOTOR_OUT4_Pin | MOTOR_OUT1_Pin);
+			break;
+		}
+		case 1: {
+			MotorPinsWrite(MOTOR_OUT1_Pin);
+			break;
+		}
+		case 2: {
+			MotorPinsWrite(MOTOR_OUT1_Pin | MOTOR_OUT2_Pin);
+			break;
+		}
+		case 3: {
+			MotorPinsWrite(MOTOR_OUT2_Pin);
+			break;
+		}
+		case 4: {
+			MotorPinsWrite(MOTOR_OUT2_Pin | MOTOR_OUT3_Pin);
+			break;
+		}
+		case 5: {
+			MotorPinsWrite(MOTOR_OUT3_Pin);
+			break;
+		}
+		case 6: {
+			MotorPinsWrite(MOTOR_OUT3_Pin | MOTOR_OUT4_Pin);
+			break;
+		}
+		case 7: {
+			MotorPinsWrite(MOTOR_OUT4_Pin);
+			break;
+		}
+	}
 #endif
 }
