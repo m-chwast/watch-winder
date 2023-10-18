@@ -7,11 +7,12 @@
 
 #include "timers.h"
 #include "main.h"
+#include "motor.h"
 
 
 void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef* htim) {
 	if(htim == &TIMERS_MOTOR_TIMER) {
-
+		Motor_IRQHandler();
 	}
 }
 

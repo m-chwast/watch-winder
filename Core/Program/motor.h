@@ -38,5 +38,6 @@ void Motor_SetMovement(uint32_t degrees, Motor_Dir dir);
 
 bool Motor_IsRunning(void);
 
+void Motor_IRQHandler(void);
 
 #endif /* PROGRAM_MOTOR_H_ */

@@ -42,6 +42,16 @@ bool Motor_IsRunning(void) {
 	return motor.isRunning;
 }
 
+void Motor_IRQHandler(void) {
+	if(motor.stepsLeft > 0) {
+		Motor_Step(motor.dir);
+		motor.stepsLeft--;
+	}
+	else {
+		Timers_Stop(&TIMERS_MOTOR_TIMER);
+		motor.isRunning = false;
+	}
+}
 
 void Motor_Step(Motor_Dir dir) {
 	//assert correct mode selection
