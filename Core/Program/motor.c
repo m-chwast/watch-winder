@@ -6,20 +6,8 @@
  */
 
 #include <assert.h>
-#include <stdbool.h>
 #include "motor.h"
 #include "main.h"
-
-//set only one mode to true
-#define DRIVE_WAVE false
-#define DRIVE_FULL_STEP false
-#define DRIVE_HALF_STEP true
-
-#if !DRIVE_HALF_STEP
-#define FINAL_DRIVE_STEP (4 - 1)
-#else
-#define FINAL_DRIVE_STEP (8 - 1)
-#endif
 
 
 static void MotorPinsWrite(uint32_t setMask) {
