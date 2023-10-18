@@ -41,3 +41,13 @@ void Console_LogValLn(const char* msg, int32_t val) {
 	Console_LogVal(msg, val);
 	PrintLine();
 }
+
+void Console_LogError(const char* msg) {
+	Console_Log("[ERROR]: ");
+	Console_Log(msg);
+}
+
+void Console_LogErrorLn(const char* msg) {
+	Console_LogError(msg);
+	PrintLine();
+}

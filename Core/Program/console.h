@@ -16,5 +16,8 @@ void Console_LogLn(const char* msg);
 void Console_LogVal(const char* msg, int32_t val);
 void Console_LogValLn(const char* msg, int32_t val);
 
+void Console_LogError(const char* msg);
+void Console_LogErrorLn(const char* msg);
+
 
 #endif /* PROGRAM_CONSOLE_H_ */
