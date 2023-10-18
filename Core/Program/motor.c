@@ -37,18 +37,18 @@
 static void MotorPinsWrite(uint32_t setMask);
 
 
-struct Motor {
-	volatile uint32_t stepsLeft;
-	volatile Motor_Dir dir;
-	volatile bool isRunning;
-	volatile uint32_t stepsPeriodUs;
+volatile struct Motor {
+	uint32_t stepsLeft;
+	Motor_Dir dir;
+	bool isRunning;
+	uint32_t stepsPeriodUs;
 
 	struct Ramp {
-		volatile uint32_t startPulses;
-		volatile uint32_t startPulsesLeft;
-		volatile uint32_t finishPulses;
-		volatile uint32_t finishPulsesLeft;
-		volatile uint8_t initSpeedPercent;
+		uint32_t startPulses;
+		uint32_t startPulsesLeft;
+		uint32_t finishPulses;
+		uint32_t finishPulsesLeft;
+		uint8_t initSpeedPercent;
 	} ramp;
 } static motor;
 
