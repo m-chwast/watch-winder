@@ -10,6 +10,9 @@
 #include "console.h"
 
 
+#define DEBOUNCING_TIME_MS 25
+
+
 typedef enum {
 	BUTTON_STATE_RELEASED,
 	BUTTON_STATE_DEBOUNCING_PRESSED,
@@ -22,7 +25,7 @@ typedef struct {
 	const uint8_t id;
 	const uint16_t pin;
 	GPIO_TypeDef* const gpio;
-	uint32_t debounceStartTime;
+	uint32_t debouncingStartTime;
 } Button;
 
 
@@ -50,18 +53,24 @@ static void ButtonManage(Button* button) {
 				//buttons are active low, so this is idle condition
 				break;
 			}
-			button->debounceStartTime = HAL_GetTick();
+			button->debouncingStartTime = HAL_GetTick();
 			button->state = BUTTON_STATE_DEBOUNCING_PRESSED;
 			PrintButtonStatus(button, "pressed");
 			break;
 		}
 		case BUTTON_STATE_DEBOUNCING_PRESSED: {
+			if(HAL_GetTick() - button->debouncingStartTime > DEBOUNCING_TIME_MS) {
+				button->state = BUTTON_STATE_PRESSED;
+			}
 			break;
 		}
 		case BUTTON_STATE_PRESSED: {
 			break;
 		}
 		case BUTTON_STATE_DEBOUNCING_RELEASED: {
+			if(HAL_GetTick() - button->debouncingStartTime > DEBOUNCING_TIME_MS) {
+				button->state = BUTTON_STATE_RELEASED;
+			}
 			break;
 		}
 	}
