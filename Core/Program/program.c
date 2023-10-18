@@ -23,6 +23,6 @@ void Program_Loop(void) {
 	static Motor_Dir dir;
 	dir = !dir;
 
-	Motor_SetMovement(3 * 360, dir);
+	Motor_SetMovement(2 * 360, dir);
 	HAL_Delay(2000);
 }

@@ -88,7 +88,16 @@ bool Motor_IsRunning(void) {
 
 void Motor_IRQHandler(void) {
 	if(motor.stepsLeft > 0) {
-		TIMERS_MOTOR_TIMER.Instance->CCR1 += motor.stepsPeriodUs;
+		uint16_t period = motor.stepsPeriodUs;
+		if(motor.ramp.startPulsesLeft > 0) {
+			//the following is y=ax+b, where b is init percent, a is (100% - init percent)/(1 - 0) and x is ramp progress
+			uint8_t speedPercent = ((100 - motor.ramp.initSpeedPercent) * (motor.ramp.startPulses - motor.ramp.startPulsesLeft)) / motor.ramp.startPulses;
+			speedPercent += motor.ramp.initSpeedPercent;
+			period = ((uint32_t)period * 100) / speedPercent;
+			motor.ramp.startPulsesLeft--;
+		}
+
+		TIMERS_MOTOR_TIMER.Instance->CCR1 += period;
 		Motor_Step(motor.dir);
 		motor.stepsLeft--;
 	}
