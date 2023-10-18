@@ -10,10 +10,9 @@
 
 
 typedef enum {
-	BUTTON_STATE_IDLE,
-	BUTTON_STATE_PRESSED,
-	BUTTON_STATE_DEBOUNCING_PRESSED,
 	BUTTON_STATE_RELEASED,
+	BUTTON_STATE_DEBOUNCING_PRESSED,
+	BUTTON_STATE_PRESSED,
 	BUTTON_STATE_DEBOUNCING_RELEASED,
 } ButtonState;
 
@@ -21,6 +20,7 @@ typedef struct {
 	ButtonState state;
 	const uint16_t pin;
 	GPIO_TypeDef* const gpio;
+	uint32_t debounceStartTime;
 } Button;
 
 
@@ -42,16 +42,19 @@ void Buttons_Manage(void) {
 
 static void ButtonManage(Button* button) {
 	switch(button->state) {
-		case BUTTON_STATE_IDLE: {
-			break;
-		}
-		case BUTTON_STATE_PRESSED: {
+		case BUTTON_STATE_RELEASED: {
+			if(HAL_GPIO_ReadPin(button->gpio, button->pin) == GPIO_PIN_SET) {
+				//buttons are active low, so this is idle condition
+				break;
+			}
+			button->debounceStartTime = HAL_GetTick();
+			button->state = BUTTON_STATE_DEBOUNCING_PRESSED;
 			break;
 		}
 		case BUTTON_STATE_DEBOUNCING_PRESSED: {
 			break;
 		}
-		case BUTTON_STATE_RELEASED: {
+		case BUTTON_STATE_PRESSED: {
 			break;
 		}
 		case BUTTON_STATE_DEBOUNCING_RELEASED: {
