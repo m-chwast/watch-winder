@@ -17,6 +17,10 @@
 #define DRIVE_FULL_STEP false
 #define DRIVE_HALF_STEP true
 
+#define START_RAMP_DEGREES 180
+#define FINISH_RAMP_DEGREES 120
+#define RAMP_INIT_SPEED_PERCENT 10
+
 #define BASE_STEPS_PER_REVOLUTION 2048
 
 #if !DRIVE_HALF_STEP
@@ -38,6 +42,14 @@ struct Motor {
 	volatile Motor_Dir dir;
 	volatile bool isRunning;
 	volatile uint32_t stepsPeriodUs;
+
+	struct Ramp {
+		volatile uint32_t startPulses;
+		volatile uint32_t startPulsesLeft;
+		volatile uint32_t finishPulses;
+		volatile uint32_t finishPulsesLeft;
+		volatile uint8_t initSpeedPercent;
+	} ramp;
 } static motor;
 
 
@@ -50,6 +62,15 @@ void Motor_SetMovement(uint32_t degrees, Motor_Dir dir) {
 	motor.stepsLeft = DEGREES_TO_STEPS(degrees);
 	motor.dir = dir;
 	Console_LogValLn("Motor steps set to ", motor.stepsLeft);
+
+	uint32_t ramp = degrees < START_RAMP_DEGREES ? 0 : DEGREES_TO_STEPS(START_RAMP_DEGREES);
+	motor.ramp.startPulses = ramp;
+	motor.ramp.startPulsesLeft = ramp;
+	ramp = degrees < START_RAMP_DEGREES + FINISH_RAMP_DEGREES ? 0 : DEGREES_TO_STEPS(FINISH_RAMP_DEGREES);
+	motor.ramp.finishPulses = ramp;
+	motor.ramp.finishPulsesLeft = ramp;
+	motor.ramp.initSpeedPercent = RAMP_INIT_SPEED_PERCENT;
+
 	motor.isRunning = true;
 	Timers_Start(&TIMERS_MOTOR_TIMER);
 }
