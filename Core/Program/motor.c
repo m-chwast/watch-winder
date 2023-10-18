@@ -45,6 +45,27 @@ void Motor_Step(Motor_Dir dir) {
 
 	}
 
+#if DRIVE_WAVE
+	switch(state) {
+		case 0: {
+			MotorPinsWrite(MOTOR_OUT1_Pin);
+			break;
+		}
+		case 1: {
+			MotorPinsWrite(MOTOR_OUT2_Pin);
+			break;
+		}
+		case 2: {
+			MotorPinsWrite(MOTOR_OUT3_Pin);
+			break;
+		}
+		case 3: {
+			MotorPinsWrite(MOTOR_OUT4_Pin);
+			break;
+		}
+	}
+#endif
+#if DRIVE_FULL_STEP
 	switch(state) {
 		case 0: {
 			MotorPinsWrite(MOTOR_OUT4_Pin | MOTOR_OUT1_Pin);
@@ -63,4 +84,8 @@ void Motor_Step(Motor_Dir dir) {
 			break;
 		}
 	}
+#endif
+#if DRIVE_HALF_STEP
+
+#endif
 }
