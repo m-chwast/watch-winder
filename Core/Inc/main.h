@@ -57,6 +57,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define MOTOR_OUT1_Pin GPIO_PIN_0
+#define MOTOR_OUT1_GPIO_Port GPIOA
+#define MOTOR_OUT2_Pin GPIO_PIN_1
+#define MOTOR_OUT2_GPIO_Port GPIOA
+#define MOTOR_OUT3_Pin GPIO_PIN_2
+#define MOTOR_OUT3_GPIO_Port GPIOA
+#define MOTOR_OUT4_Pin GPIO_PIN_3
+#define MOTOR_OUT4_GPIO_Port GPIOA
 #define BOARD_LED_Pin GPIO_PIN_4
 #define BOARD_LED_GPIO_Port GPIOA
 
