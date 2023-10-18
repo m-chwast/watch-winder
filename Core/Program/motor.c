@@ -8,6 +8,7 @@
 #include <assert.h>
 #include "motor.h"
 #include "main.h"
+#include "console.h"
 
 
 #define DEGREES_TO_STEPS(DEG) ((DEG) * MOTOR_STEPS_PER_REVOLUTION / 360)
@@ -16,13 +17,20 @@
 struct Motor {
 	volatile uint32_t stepsLeft;
 	volatile Motor_Dir dir;
-	bool isRunning;
+	volatile bool isRunning;
 } static motor;
 
 
 void Motor_SetMovement(uint32_t degrees, Motor_Dir dir) {
+	if(Motor_IsRunning()) {
+		Console_LogErrorLn("Motor movement set while running");
+		return;
+	}
+
 	motor.stepsLeft = DEGREES_TO_STEPS(degrees);
 	motor.dir = dir;
+	Console_LogValLn("Motor steps set to ", motor.stepsLeft);
+	motor.isRunning = true;
 }
 
 bool Motor_IsRunning(void) {
