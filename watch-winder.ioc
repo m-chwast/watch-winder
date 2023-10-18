@@ -41,6 +41,7 @@ NVIC.NonMaskableInt_IRQn=true\:0\:0\:false\:false\:true\:false\:true\:false
 NVIC.PendSV_IRQn=true\:0\:0\:false\:false\:true\:false\:false\:false
 NVIC.SVC_IRQn=true\:0\:0\:false\:false\:true\:false\:false\:true
 NVIC.SysTick_IRQn=true\:3\:0\:false\:false\:true\:false\:true\:false
+NVIC.TIM14_IRQn=true\:1\:0\:true\:false\:true\:true\:true\:true
 PA0.GPIOParameters=GPIO_Label
 PA0.GPIO_Label=MOTOR_OUT1
 PA0.Locked=true
