@@ -5,8 +5,9 @@
  *      Author: Mateusz Chwast
  */
 
-#include "buttons.h"
 #include "main.h"
+#include "buttons.h"
+#include "console.h"
 
 
 typedef enum {
@@ -18,17 +19,19 @@ typedef enum {
 
 typedef struct {
 	ButtonState state;
+	const uint8_t id;
 	const uint16_t pin;
 	GPIO_TypeDef* const gpio;
 	uint32_t debounceStartTime;
 } Button;
 
 
-static Button button0 = { .pin = BUTTON0_Pin, .gpio = BUTTON0_GPIO_Port };
-static Button button1 = { .pin = BUTTON1_Pin, .gpio = BUTTON1_GPIO_Port };
+static Button button0 = { .pin = BUTTON0_Pin, .gpio = BUTTON0_GPIO_Port, .id = 0 };
+static Button button1 = { .pin = BUTTON1_Pin, .gpio = BUTTON1_GPIO_Port, .id = 1 };
 
 
 static void ButtonManage(Button* button);
+static inline void PrintButtonStatus(const Button* button, const char* status);
 
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
@@ -49,6 +52,7 @@ static void ButtonManage(Button* button) {
 			}
 			button->debounceStartTime = HAL_GetTick();
 			button->state = BUTTON_STATE_DEBOUNCING_PRESSED;
+			PrintButtonStatus(button, "pressed");
 			break;
 		}
 		case BUTTON_STATE_DEBOUNCING_PRESSED: {
@@ -61,4 +65,10 @@ static void ButtonManage(Button* button) {
 			break;
 		}
 	}
+}
+
+static inline void PrintButtonStatus(const Button* button, const char* status) {
+	Console_LogVal("Button ", button->id);
+	Console_Log(" ");
+	Console_LogLn(status);
 }
