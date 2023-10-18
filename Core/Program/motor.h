@@ -9,6 +9,7 @@
 #define PROGRAM_MOTOR_H_
 
 #include <stdbool.h>
+#include <stdint.h>
 
 //set only one mode to true
 #define DRIVE_WAVE false
@@ -33,5 +34,9 @@ typedef enum {
 
 
 void Motor_Step(Motor_Dir dir);
+void Motor_SetMovement(uint32_t degrees, Motor_Dir dir);
+
+bool Motor_IsRunning(void);
+
 
 #endif /* PROGRAM_MOTOR_H_ */

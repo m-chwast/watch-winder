@@ -10,6 +10,25 @@
 #include "main.h"
 
 
+#define DEGREES_TO_STEPS(DEG) ((DEG) * MOTOR_STEPS_PER_REVOLUTION / 360)
+
+
+struct Motor {
+	volatile uint32_t stepsLeft;
+	volatile Motor_Dir dir;
+	bool isRunning;
+} static motor;
+
+
+void Motor_SetMovement(uint32_t degrees, Motor_Dir dir) {
+	motor.stepsLeft = DEGREES_TO_STEPS(degrees);
+	motor.dir = dir;
+}
+
+bool Motor_IsRunning(void) {
+	return motor.isRunning;
+}
+
 static void MotorPinsWrite(uint32_t setMask) {
 	//if any assert fails, function needs modifications to work correctly
 	static_assert(MOTOR_OUT1_GPIO_Port == MOTOR_OUT2_GPIO_Port);
