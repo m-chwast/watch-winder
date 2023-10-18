@@ -5,12 +5,14 @@
  *      Author: Mateusz Chwast
  */
 
+#include <stdbool.h>
 #include "main.h"
 #include "buttons.h"
 #include "console.h"
 
 
 #define DEBOUNCING_TIME_MS 25
+#define LONG_PRESSING_TIME_MS 2500
 
 
 typedef enum {
@@ -25,7 +27,11 @@ typedef struct {
 	const uint8_t id;
 	const uint16_t pin;
 	GPIO_TypeDef* const gpio;
-	uint32_t debouncingStartTime;
+	uint32_t startTime;	//used for debouncing and for long pressing check
+
+	Buttons_Callback onPressed;
+	Buttons_Callback onReleased;
+	Buttons_Callback onReleasedLate;	//called when released after long pressing
 } Button;
 
 
@@ -53,13 +59,19 @@ static void ButtonManage(Button* button) {
 				//buttons are active low, so this is released condition -> do nothing
 				break;
 			}
-			button->debouncingStartTime = HAL_GetTick();
+
+			button->startTime = HAL_GetTick();
 			button->state = BUTTON_STATE_DEBOUNCING_PRESSED;
 			PrintButtonStatus(button, "pressed");
+
+			if(button->onPressed) {
+				button->onPressed();
+			}
 			break;
 		}
 		case BUTTON_STATE_DEBOUNCING_PRESSED: {
-			if(HAL_GetTick() - button->debouncingStartTime > DEBOUNCING_TIME_MS) {
+			if(HAL_GetTick() - button->startTime > DEBOUNCING_TIME_MS) {
+				button->startTime = HAL_GetTick();
 				button->state = BUTTON_STATE_PRESSED;
 			}
 			break;
@@ -69,13 +81,30 @@ static void ButtonManage(Button* button) {
 				//buttons are active low, so this is pressed condition -> do nothing
 				break;
 			}
-			button->debouncingStartTime = HAL_GetTick();
+
+			bool longPressing = HAL_GetTick() - button->startTime > LONG_PRESSING_TIME_MS;
+
+			button->startTime = HAL_GetTick();
 			button->state = BUTTON_STATE_DEBOUNCING_RELEASED;
-			PrintButtonStatus(button, "released");
+
+			if(longPressing) {
+				PrintButtonStatus(button, "released late");
+			}
+			else {
+				PrintButtonStatus(button, "released");
+			}
+
+			//call long released or released
+			if(longPressing && button->onReleasedLate) {
+				button->onReleasedLate();
+			}
+			else if(button->onReleased) {
+				button->onReleased();
+			}
 			break;
 		}
 		case BUTTON_STATE_DEBOUNCING_RELEASED: {
-			if(HAL_GetTick() - button->debouncingStartTime > DEBOUNCING_TIME_MS) {
+			if(HAL_GetTick() - button->startTime > DEBOUNCING_TIME_MS) {
 				button->state = BUTTON_STATE_RELEASED;
 			}
 			break;

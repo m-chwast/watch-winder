@@ -9,6 +9,9 @@
 #define PROGRAM_BUTTONS_H_
 
 
+typedef void(*Buttons_Callback)(void);
+
+
 void Buttons_Manage(void);
 
 
