@@ -88,15 +88,26 @@ bool Motor_IsRunning(void) {
 
 void Motor_IRQHandler(void) {
 	if(motor.stepsLeft > 0) {
-		uint16_t period = motor.stepsPeriodUs;
-		if(motor.ramp.startPulsesLeft > 0) {
+
+		uint8_t speedPercent;
+		if(motor.ramp.startPulsesLeft > 0) {	//start ramp active
 			//the following is y=ax+b, where b is init percent, a is (100% - init percent)/(1 - 0) and x is ramp progress
-			uint8_t speedPercent = ((100 - motor.ramp.initSpeedPercent) * (motor.ramp.startPulses - motor.ramp.startPulsesLeft)) / motor.ramp.startPulses;
+			speedPercent = ((100 - motor.ramp.initSpeedPercent) * (motor.ramp.startPulses - motor.ramp.startPulsesLeft)) / motor.ramp.startPulses;
 			speedPercent += motor.ramp.initSpeedPercent;
-			period = ((uint32_t)period * 100) / speedPercent;
 			motor.ramp.startPulsesLeft--;
 		}
+		else if(motor.stepsLeft <= motor.ramp.finishPulses) {	//finish ramp active
+			//similarly to start ramp, this is also y=ax+b, but: b=100%, a=(10%-100%)/(1-0) (a is NEGATIVE!
+			// this is avoided by doing y=b-|a|x, which is the same mathematically in this case), x is ramp progress
+			speedPercent = 100;
+			speedPercent -= ((100 - motor.ramp.initSpeedPercent) *  (motor.ramp.finishPulses - motor.ramp.finishPulsesLeft)) / motor.ramp.finishPulses;
+			motor.ramp.finishPulsesLeft--;
+		}
+		else {	//no ramp active
+			speedPercent = 100;
+		}
 
+		uint16_t period = (uint32_t)motor.stepsPeriodUs * 100 / speedPercent;
 		TIMERS_MOTOR_TIMER.Instance->CCR1 += period;
 		Motor_Step(motor.dir);
 		motor.stepsLeft--;
