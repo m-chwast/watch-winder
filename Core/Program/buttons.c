@@ -50,7 +50,7 @@ static void ButtonManage(Button* button) {
 	switch(button->state) {
 		case BUTTON_STATE_RELEASED: {
 			if(HAL_GPIO_ReadPin(button->gpio, button->pin) == GPIO_PIN_SET) {
-				//buttons are active low, so this is idle condition
+				//buttons are active low, so this is released condition -> do nothing
 				break;
 			}
 			button->debouncingStartTime = HAL_GetTick();
@@ -65,6 +65,13 @@ static void ButtonManage(Button* button) {
 			break;
 		}
 		case BUTTON_STATE_PRESSED: {
+			if(HAL_GPIO_ReadPin(button->gpio, button->pin) == GPIO_PIN_RESET) {
+				//buttons are active low, so this is pressed condition -> do nothing
+				break;
+			}
+			button->debouncingStartTime = HAL_GetTick();
+			button->state = BUTTON_STATE_DEBOUNCING_RELEASED;
+			PrintButtonStatus(button, "released");
 			break;
 		}
 		case BUTTON_STATE_DEBOUNCING_RELEASED: {
