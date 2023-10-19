@@ -9,11 +9,15 @@
 #include "console.h"
 #include "motor.h"
 #include "buttons.h"
+#include "modes.h"
 
 
 void Program_Init(void) {
 	Console_LogLn("Init");
 	Motor_SetSpeed(6);
+
+	Buttons_SetCallbacks(&button0, NULL, Modes_Main_SetNext, Modes_Main_ToggleEditActive);
+	Buttons_SetCallbacks(&button1, NULL, Modes_Timing_SetNext, Modes_Timing_ToggleEditActive);
 }
 
 void Program_Loop(void) {
