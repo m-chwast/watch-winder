@@ -25,12 +25,20 @@ Modes_MainMode Modes_Main_Get(void) {
 	return mainMode.value;
 }
 
+uint8_t Modes_Main_GetIncremented(void) {
+	return Modes_Main_Get() + 1;
+}
+
 bool Modes_Main_GetEditActive(void) {
 	return mainMode.editActive;
 }
 
 Modes_TimingMode Modes_Timing_Get(void) {
 	return timingMode.value;
+}
+
+uint8_t Modes_Timing_GetIncremented(void) {
+	return Modes_Timing_Get() + 1;
 }
 
 bool Modes_Timing_GetEditActive(void) {

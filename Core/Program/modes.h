@@ -9,6 +9,8 @@
 #define PROGRAM_MODES_H_
 
 #include <stdbool.h>
+#include <stdint.h>
+
 
 typedef enum {
 	MAIN_MODE_COUNT = 4
@@ -20,9 +22,11 @@ typedef enum {
 
 
 Modes_MainMode Modes_Main_Get(void);
+uint8_t Modes_Main_GetIncremented(void);
 bool Modes_Main_GetEditActive(void);
 
 Modes_TimingMode Modes_Timing_Get(void);
+uint8_t Modes_Timing_GetIncremented(void);
 bool Modes_Timing_GetEditActive(void);
 
 
