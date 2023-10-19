@@ -16,7 +16,7 @@ typedef struct {} Led;
 typedef Led LedCounter;
 
 typedef bool(*Leds_Predicate)(void);
-typedef uint32_t(*Leds_ValueGetter)(void);
+typedef uint8_t(*Leds_ValueGetter)(void);
 
 
 extern LedCounter led0;

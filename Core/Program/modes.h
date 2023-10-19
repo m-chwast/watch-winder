@@ -8,6 +8,8 @@
 #ifndef PROGRAM_MODES_H_
 #define PROGRAM_MODES_H_
 
+#include <stdbool.h>
+
 typedef enum {
 	MAIN_MODE_COUNT = 4
 } Modes_MainMode;
@@ -18,10 +20,10 @@ typedef enum {
 
 
 Modes_MainMode Modes_Main_Get(void);
-Modes_MainMode Modes_Main_GetEditActive(void);
+bool Modes_Main_GetEditActive(void);
 
 Modes_TimingMode Modes_Timing_Get(void);
-Modes_TimingMode Modes_Timing_GetEditActive(void);
+bool Modes_Timing_GetEditActive(void);
 
 
 void Modes_Main_ToggleEditActive(void);

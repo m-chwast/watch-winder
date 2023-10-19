@@ -23,6 +23,9 @@ void Program_Init(void) {
 
 	Buttons_SetCallbacks(&button0, NULL, Modes_Main_SetNext, Modes_Main_ToggleEditActive);
 	Buttons_SetCallbacks(&button1, NULL, Modes_Timing_SetNext, Modes_Timing_ToggleEditActive);
+
+	Leds_LedCounterSetup(&led0, Modes_Main_GetEditActive, Modes_Main_Get);
+	Leds_LedCounterSetup(&led1, Modes_Timing_GetEditActive, Modes_Timing_Get);
 }
 
 void Program_Loop(void) {
