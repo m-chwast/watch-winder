@@ -14,9 +14,13 @@
 extern RTC_HandleTypeDef hrtc;
 
 
-static volatile bool alarmFlag;
-static void(*alarmCallback)(void);
-static uint32_t(*periodSecondsCallback)(void);
+static struct Rtc {
+	volatile bool alarmFlag;
+	struct Callbacks {
+		void(*alarm)(void);
+		uint32_t(*periodSeconds)(void);
+	} callbacks;
+} rtc;
 
 
 static void PrintTime(void);
@@ -28,31 +32,31 @@ void RTC_Init(void) {
 }
 
 void RTC_Manage(void) {
-	if(alarmFlag) {
-		alarmFlag = false;
+	if(rtc.alarmFlag) {
+		rtc.alarmFlag = false;
 		Console_Log("Alarm! ");
 		PrintTime();
 		RTC_SetNextAlarm();
-		if(alarmCallback != NULL) {
-			alarmCallback();
+		if(rtc.callbacks.alarm != NULL) {
+			rtc.callbacks.alarm();
 		}
 	}
 }
 
 void RTC_SetupAlarmCallback(void(*cb)(void)) {
-	alarmCallback = cb;
+	rtc.callbacks.alarm = cb;
 }
 
 void RTC_SetupPeriodCallback(uint32_t(*periodSecondsCb)(void)) {
-	periodSecondsCallback = periodSecondsCb;
+	rtc.callbacks.periodSeconds = periodSecondsCb;
 }
 
 void RTC_SetNextAlarm(void) {
-	if(periodSecondsCallback == NULL) {
+	if(rtc.callbacks.periodSeconds == NULL) {
 		return;
 	}
 
-	uint32_t secondsToAlarm = periodSecondsCallback();
+	uint32_t secondsToAlarm = rtc.callbacks.periodSeconds();
 
 	uint8_t hours = secondsToAlarm / 3600;
 	secondsToAlarm -= hours * 3600;
@@ -86,7 +90,7 @@ void RTC_SetNextAlarm(void) {
 }
 
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
-	alarmFlag = true;
+	rtc.alarmFlag = true;
 }
 
 static void PrintTime(void) {
