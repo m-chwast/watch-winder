@@ -46,6 +46,7 @@ LedCounter led1 = { .led = { .id = 1, .gpio = LED1_GPIO_Port, .pin = LED1_Pin, .
 
 
 static void LedManage(Led* led);
+static void LedCounterManage(LedCounter* led);
 static void PrintLedStatus(Led* led, const char* status);
 static inline void LedWrite(Led* led, bool ledOn);
 static inline void LedToggle(Led* led);
@@ -59,6 +60,16 @@ void Leds_Manage(void) {
 static void LedManage(Led* led) {
 	switch(led->state) {
 		case LED_STATE_IDLE: {
+			//idle state calls more specific managers
+			switch(led->type) {
+				case LED_TYPE_STD: {
+					break;
+				}
+				case LED_TYPE_COUNTER: {
+					LedCounterManage((LedCounter*)led);
+					break;
+				}
+			}
 			break;
 		}
 		case LED_STATE_INIT_START: {
@@ -89,6 +100,10 @@ static void LedManage(Led* led) {
 			break;
 		}
 	}
+}
+
+static void LedCounterManage(LedCounter* led) {
+
 }
 
 void Leds_BeginInit(Led* led) {
