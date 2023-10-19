@@ -7,7 +7,6 @@
 
 #include <stdbool.h>
 #include "main.h"
-#include "buttons.h"
 #include "console.h"
 
 
@@ -22,6 +21,8 @@ typedef enum {
 	BUTTON_STATE_DEBOUNCING_RELEASED,
 } ButtonState;
 
+typedef void(*Buttons_Callback)(void);
+
 typedef struct {
 	ButtonState state;
 	const uint8_t id;
@@ -35,8 +36,8 @@ typedef struct {
 } Button;
 
 
-static Button button0 = { .pin = BUTTON0_Pin, .gpio = BUTTON0_GPIO_Port, .id = 0 };
-static Button button1 = { .pin = BUTTON1_Pin, .gpio = BUTTON1_GPIO_Port, .id = 1 };
+Button button0 = { .pin = BUTTON0_Pin, .gpio = BUTTON0_GPIO_Port, .id = 0 };
+Button button1 = { .pin = BUTTON1_Pin, .gpio = BUTTON1_GPIO_Port, .id = 1 };
 
 
 static void ButtonManage(Button* button);
@@ -45,6 +46,12 @@ static inline void PrintButtonStatus(const Button* button, const char* status);
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
+}
+
+void Buttons_SetCallbacks(Button* button, Buttons_Callback onPressed, Buttons_Callback onReleased, Buttons_Callback onReleasedLate) {
+	button->onPressed = onPressed;
+	button->onReleased = onReleased;
+	button->onReleasedLate = onReleasedLate;
 }
 
 void Buttons_Manage(void) {
