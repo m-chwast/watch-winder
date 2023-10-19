@@ -141,7 +141,7 @@ void Modes_Main_ToggleEditActive(void) {
 		mainMode.tmpValue = mainMode.value;
 	}
 	else {
-		if(timingMode.value != timingMode.tmpValue) {
+		if(mainMode.value != mainMode.tmpValue) {
 			Console_LogLn("Main Mode changed");
 			mainMode.value = mainMode.tmpValue;
 			WatchWinder_Refresh();
