@@ -35,6 +35,7 @@
 
 
 static void MotorPinsWrite(uint32_t setMask);
+static inline void MotorPowerOff(void);
 
 
 volatile struct Motor {
@@ -114,6 +115,7 @@ void Motor_IRQHandler(void) {
 	}
 	else {
 		Timers_Stop(&TIMERS_MOTOR_TIMER);
+		MotorPowerOff();
 		motor.isRunning = false;
 	}
 }
@@ -222,4 +224,8 @@ static void MotorPinsWrite(uint32_t setMask) {
 	resetMask &= ~(setMask);
 	HAL_GPIO_WritePin(MOTOR_OUT1_GPIO_Port, resetMask, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(MOTOR_OUT1_GPIO_Port, setMask, GPIO_PIN_SET);
+}
+
+static inline void MotorPowerOff(void) {
+	MotorPinsWrite(0);
 }
