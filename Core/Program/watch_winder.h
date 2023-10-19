@@ -12,6 +12,7 @@
 void WatchWinder_Manage(void);
 
 void WatchWinder_SetRotationRequest(void);
+void WatchWinder_Refresh(void);
 
 
 #endif /* PROGRAM_WATCH_WINDER_H_ */

@@ -9,6 +9,7 @@
 #include "motor.h"
 #include "modes.h"
 #include "console.h"
+#include "rtc.h"
 
 
 typedef enum {
@@ -128,4 +129,9 @@ void WatchWinder_Manage(void) {
 
 void WatchWinder_SetRotationRequest(void) {
 	watchWinder.isRotationRequested = true;
+}
+
+void WatchWinder_Refresh(void) {
+	WatchWinder_SetRotationRequest();
+	RTC_SetNextAlarm();
 }

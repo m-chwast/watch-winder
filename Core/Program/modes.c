@@ -10,6 +10,7 @@
 #include <math.h>
 #include "modes.h"
 #include "console.h"
+#include "watch_winder.h"
 
 
 #define TURNS_PER_DAY_A 600
@@ -140,7 +141,11 @@ void Modes_Main_ToggleEditActive(void) {
 		mainMode.tmpValue = mainMode.value;
 	}
 	else {
-		mainMode.value = mainMode.tmpValue;
+		if(timingMode.value != timingMode.tmpValue) {
+			Console_LogLn("Main Mode changed");
+			mainMode.value = mainMode.tmpValue;
+			WatchWinder_Refresh();
+		}
 	}
 }
 
@@ -160,7 +165,11 @@ void Modes_Timing_ToggleEditActive(void) {
 		timingMode.tmpValue = timingMode.value;
 	}
 	else {
-		timingMode.value = timingMode.tmpValue;
+		if(timingMode.value != timingMode.tmpValue) {
+			Console_LogLn("Timing Mode changed");
+			timingMode.value = timingMode.tmpValue;
+			WatchWinder_Refresh();
+		}
 	}
 }
 
