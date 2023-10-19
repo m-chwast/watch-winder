@@ -50,10 +50,12 @@ void WatchWinder_Manage(void) {
 			switch(Modes_Main_Get()) {
 				case MAIN_MODE_CLOCKWISE: {
 					turnsClockwise = turnsRequested;
+					watchWinder.previousCycleWasClockwise = false;
 					break;
 				}
 				case MAIN_MODE_ANTICLOCKWISE: {
 					turnsCounterclockwise = turnsRequested;
+					watchWinder.previousCycleWasClockwise = true;
 					break;
 				}
 				case MAIN_MODE_MIX_A: {
@@ -86,6 +88,45 @@ void WatchWinder_Manage(void) {
 			}
 			watchWinder.turnsRemainingClockwise = turnsClockwise;
 			watchWinder.turnsRemainingCounterclockwise = turnsCounterclockwise;
+			watchWinder.state = WW_STATE_ROTATION;
+			break;
+		}
+		case WW_STATE_ROTATION: {
+			if(Motor_IsRunning()) {
+				break;
+			}
+
+			uint16_t turns = 0;
+			Motor_Dir dir;
+
+			//this is the current cycle info, since it was updated in init state
+			if(watchWinder.previousCycleWasClockwise) {
+				if(watchWinder.turnsRemainingClockwise) {
+					turns = watchWinder.turnsRemainingClockwise;
+					dir = MOTOR_DIR_CLOCKWISE;
+				}
+				else if(watchWinder.turnsRemainingCounterclockwise) {
+					turns = watchWinder.turnsRemainingCounterclockwise;
+					dir = MOTOR_DIR_ANTICLOCKWISE;
+				}
+			}
+			else {
+				if(watchWinder.turnsRemainingCounterclockwise) {
+					turns = watchWinder.turnsRemainingCounterclockwise;
+					dir = MOTOR_DIR_ANTICLOCKWISE;
+				}
+				else if(watchWinder.turnsRemainingClockwise) {
+					turns = watchWinder.turnsRemainingClockwise;
+					dir = MOTOR_DIR_CLOCKWISE;
+				}
+			}
+
+			if(turns == 0) {
+				watchWinder.state = WW_STATE_IDLE;
+			}
+			else {
+				Motor_SetMovement(MOTOR_REVOLUTIONS_TO_DEGREES(turns), dir);
+			}
 			break;
 		}
 	}
