@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include "motor.h"
 #include "modes.h"
+#include "console.h"
 
 
 typedef enum {
@@ -26,15 +27,6 @@ static struct WatchWinder {
 
 
 void WatchWinder_Manage(void) {
-	/*
-	if(watchWinder.isRotationRequested && Motor_IsRunning() == false) {
-		watchWinder.isRotationRequested = false;
-		Motor_SetSpeed(Modes_GetRevolutionsPerHour());
-		uint32_t revolutions = MOTOR_REVOLUTIONS_TO_DEGREES(Modes_GetRevolutionsPerCycle());
-		Motor_SetMovement(revolutions, MOTOR_DIR_CLOCKWISE);
-	}
-	*/
-
 	switch(watchWinder.state) {
 		case WW_STATE_IDLE: {
 			if(watchWinder.isRotationRequested && !Motor_IsRunning()) {
@@ -86,6 +78,7 @@ void WatchWinder_Manage(void) {
 					break;
 				}
 			}
+			Console_LogValLn("Starting rotation. Turns: ", turnsRequested);
 			watchWinder.turnsRemainingClockwise = turnsClockwise;
 			watchWinder.turnsRemainingCounterclockwise = turnsCounterclockwise;
 			watchWinder.state = WW_STATE_ROTATION;
@@ -122,6 +115,7 @@ void WatchWinder_Manage(void) {
 			}
 
 			if(turns == 0) {
+				Console_LogLn("Rotation finished");
 				watchWinder.state = WW_STATE_IDLE;
 			}
 			else {
