@@ -23,7 +23,7 @@ static Mode timingMode;
 
 uint32_t Modes_GetCyclePeriod(void) {
 	//TODO
-	return 10;
+	return 30;
 }
 
 Modes_MainMode Modes_Main_Get(void) {

@@ -42,18 +42,6 @@ void Program_Init(void) {
 }
 
 void Program_Loop(void) {
-	/*
-	if(Motor_IsRunning()) {
-		return;
-	}
-
-	static Motor_Dir dir;
-	dir = !dir;
-
-	Motor_SetMovement(2 * 360, dir);
-	HAL_Delay(2000);
-	*/
-
 	Program_Manage();
 	Buttons_Manage();
 	Leds_Manage();
@@ -61,7 +49,10 @@ void Program_Loop(void) {
 }
 
 static void Program_Manage(void) {
-
+	if(program.isRotationRequested && Motor_IsRunning() == false) {
+		program.isRotationRequested = false;
+		Motor_SetMovement(360, MOTOR_DIR_CLOCKWISE);
+	}
 }
 
 static void SetRotationRequest(void) {
