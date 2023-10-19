@@ -42,9 +42,15 @@ typedef struct {
 	const uint8_t id;
 } Led;
 
+typedef bool(*Leds_Predicate)(void);
+typedef uint32_t(*Leds_ValueGetter)(void);
+
 typedef struct {
 	Led led;
+
 	LedCounter_State counterState;
+	Leds_Predicate counterEnable;
+	Leds_ValueGetter counterValue;
 } LedCounter;
 
 
@@ -125,6 +131,11 @@ static void LedCounterManage(LedCounter* led) {
 
 void Leds_BeginInit(Led* led) {
 	led->state = LED_STATE_INIT_START;
+}
+
+void Leds_LedCounterSetup(LedCounter* led, Leds_Predicate counterEnable, Leds_ValueGetter counterValue) {
+	led->counterEnable = counterEnable;
+	led->counterValue = counterValue;
 }
 
 static void PrintLedStatus(Led* led, const char* status) {
