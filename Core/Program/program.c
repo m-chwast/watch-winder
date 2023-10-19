@@ -26,8 +26,9 @@ static void SetRotationRequest(void);
 void Program_Init(void) {
 	Console_LogLn("Init");
 
-	RTC_Init();
+	RTC_SetupPeriodCallback(Modes_GetCyclePeriod);
 	RTC_SetupAlarmCallback(SetRotationRequest);
+	RTC_Init();
 
 	Leds_BeginInit(&led0);
 	Leds_BeginInit(&led1);

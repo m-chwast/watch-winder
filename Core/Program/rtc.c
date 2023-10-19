@@ -5,9 +5,9 @@
  *      Author: Mateusz Chwast
  */
 
+#include <stdbool.h>
 #include "main.h"
 #include "rtc.h"
-#include "modes.h"
 #include "console.h"
 
 
@@ -16,6 +16,7 @@ extern RTC_HandleTypeDef hrtc;
 
 static volatile bool alarmFlag;
 static void(*alarmCallback)(void);
+static uint32_t(*periodSecondsCallback)(void);
 
 
 static void PrintTime(void);
@@ -42,8 +43,16 @@ void RTC_SetupAlarmCallback(void(*cb)(void)) {
 	alarmCallback = cb;
 }
 
+void RTC_SetupPeriodCallback(uint32_t(*periodSecondsCb)(void)) {
+	periodSecondsCallback = periodSecondsCb;
+}
+
 void RTC_SetNextAlarm(void) {
-	uint32_t secondsToAlarm = Modes_GetCyclePeriod();
+	if(periodSecondsCallback == NULL) {
+		return;
+	}
+
+	uint32_t secondsToAlarm = periodSecondsCallback();
 
 	uint8_t hours = secondsToAlarm / 3600;
 	secondsToAlarm -= hours * 3600;
