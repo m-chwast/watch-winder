@@ -134,6 +134,10 @@ static void ButtonManage(Button* button) {
 	}
 }
 
+void Buttons_EmptyCallback(void) {
+
+}
+
 static inline void PrintButtonStatus(const Button* button, const char* status) {
 	Console_LogVal("Button ", button->id);
 	Console_Log(" ");
