@@ -12,22 +12,14 @@
 #include "modes.h"
 #include "leds.h"
 #include "rtc.h"
-
-
-static struct Program {
-	bool isRotationRequested;
-} program;
-
-
-static void Program_Manage(void);
-static void SetRotationRequest(void);
+#include "watch_winder.h"
 
 
 void Program_Init(void) {
 	Console_LogLn("Init");
 
 	RTC_SetupPeriodCallback(Modes_GetCyclePeriod);
-	RTC_SetupAlarmCallback(SetRotationRequest);
+	RTC_SetupAlarmCallback(WatchWinder_SetRotationRequest);
 	RTC_Init();
 
 	Leds_BeginInit(&led0);
@@ -43,21 +35,8 @@ void Program_Init(void) {
 }
 
 void Program_Loop(void) {
-	Program_Manage();
+	WatchWinder_Manage();
 	Buttons_Manage();
 	Leds_Manage();
 	RTC_Manage();
-}
-
-static void Program_Manage(void) {
-	if(program.isRotationRequested && Motor_IsRunning() == false) {
-		program.isRotationRequested = false;
-		Motor_SetSpeed(Modes_GetRevolutionsPerHour());
-		uint32_t revolutions = MOTOR_REVOLUTIONS_TO_DEGREES(Modes_GetRevolutionsPerCycle());
-		Motor_SetMovement(revolutions, MOTOR_DIR_CLOCKWISE);
-	}
-}
-
-static void SetRotationRequest(void) {
-	program.isRotationRequested = true;
 }
