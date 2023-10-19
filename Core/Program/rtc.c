@@ -15,6 +15,7 @@ extern RTC_HandleTypeDef hrtc;
 
 
 static volatile bool alarmFlag;
+static void(*alarmCallback)(void);
 
 
 static void PrintTime(void);
@@ -31,7 +32,14 @@ void RTC_Manage(void) {
 		Console_Log("Alarm! ");
 		PrintTime();
 		RTC_SetNextAlarm();
+		if(alarmCallback != NULL) {
+			alarmCallback();
+		}
 	}
+}
+
+void RTC_SetupAlarmCallback(void(*cb)(void)) {
+	alarmCallback = cb;
 }
 
 void RTC_SetNextAlarm(void) {

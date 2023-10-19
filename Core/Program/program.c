@@ -14,13 +14,20 @@
 #include "rtc.h"
 
 
+static struct Program {
+	bool isRotationRequested;
+} program;
+
+
 static void Program_Manage(void);
+static void SetRotationRequest(void);
 
 
 void Program_Init(void) {
 	Console_LogLn("Init");
 
 	RTC_Init();
+	RTC_SetupAlarmCallback(SetRotationRequest);
 
 	Leds_BeginInit(&led0);
 	Leds_BeginInit(&led1);
@@ -55,4 +62,8 @@ void Program_Loop(void) {
 
 static void Program_Manage(void) {
 
+}
+
+static void SetRotationRequest(void) {
+	program.isRotationRequested = true;
 }

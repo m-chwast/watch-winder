@@ -9,6 +9,8 @@
 #define PROGRAM_RTC_H_
 
 
+void RTC_SetupAlarmCallback(void(*cb)(void));
+
 void RTC_Init(void);
 void RTC_SetNextAlarm(void);
 
