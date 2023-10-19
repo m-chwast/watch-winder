@@ -46,7 +46,7 @@ static Mode timingMode;
 
 
 uint32_t Modes_GetCyclePeriod(void) {
-	switch(timingMode.value) {
+	switch(Modes_Timing_Get()) {
 		case TIMING_MODE_A: {
 			return CYCLE_TIME_A;
 		}
@@ -66,7 +66,7 @@ uint32_t Modes_GetCyclePeriod(void) {
 }
 
 uint32_t Modes_GetRevolutionsPerCycle(void) {
-	switch(timingMode.value) {
+	switch(Modes_Timing_Get()) {
 		case TIMING_MODE_A: {
 			return TURNS_PER_CYCLE_A;
 		}
@@ -86,7 +86,7 @@ uint32_t Modes_GetRevolutionsPerCycle(void) {
 }
 
 uint32_t Modes_GetRevolutionsPerHour(void) {
-	switch(timingMode.value) {
+	switch(Modes_Timing_Get()) {
 		case TIMING_MODE_A: {
 			return RPM_TO_RPH(RPM_A);
 		}
