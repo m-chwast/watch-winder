@@ -14,6 +14,9 @@
 #define INIT_BLINK_TIME_MS 1000
 #define INIT_BLINKS_COUNT 2
 
+#define LED_COUNTER_BLINK_PERIOD_MS 200
+#define LED_COUNTER_FULL_PERIOD_MS (10 * LED_COUNTER_BLINK_PERIOD_MS)
+
 
 typedef enum {
 	LED_STATE_IDLE,
@@ -116,8 +119,22 @@ static void LedManage(Led* led) {
 }
 
 static void LedCounterManage(LedCounter* led) {
+	if(led->counterEnable == NULL || led->counterValue == NULL) {
+		//no callbacks
+		return;
+	}
+
+	uint32_t* time = &led->led.time;
+	uint8_t* cnt = &led->led.cnt;
+
 	switch(led->counterState) {
 		case LED_COUNTER_STATE_IDLE: {
+			if(led->counterEnable()) {
+				LedWrite((Led*)led, true);
+				*time = HAL_GetTick();
+				*cnt = 0;
+				led->counterState = LED_COUNTER_STATE_BLINK;
+			}
 			break;
 		}
 		case LED_COUNTER_STATE_BLINK: {
