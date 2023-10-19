@@ -51,7 +51,7 @@ void Program_Loop(void) {
 static void Program_Manage(void) {
 	if(program.isRotationRequested && Motor_IsRunning() == false) {
 		program.isRotationRequested = false;
-		Motor_SetMovement(360, MOTOR_DIR_CLOCKWISE);
+		Motor_SetMovement(MOTOR_REVOLUTIONS_TO_DEGREES(1), MOTOR_DIR_CLOCKWISE);
 	}
 }
 

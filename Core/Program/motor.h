@@ -12,6 +12,9 @@
 #include <stdint.h>
 
 
+#define MOTOR_REVOLUTIONS_TO_DEGREES(REV) (REV * 360)
+
+
 typedef enum {
 	MOTOR_DIR_CLOCKWISE,
 	MOTOR_DIR_ANTICLOCKWISE
