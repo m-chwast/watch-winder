@@ -130,7 +130,6 @@ static void LedCounterManage(LedCounter* led) {
 	switch(led->counterState) {
 		case LED_COUNTER_STATE_IDLE: {
 			if(led->counterEnable()) {
-				LedWrite((Led*)led, true);
 				*time = HAL_GetTick();
 				*cnt = 0;
 				led->counterState = LED_COUNTER_STATE_BLINK;
@@ -138,9 +137,27 @@ static void LedCounterManage(LedCounter* led) {
 			break;
 		}
 		case LED_COUNTER_STATE_BLINK: {
+			if(HAL_GetTick() - *time <= LED_COUNTER_BLINK_PERIOD_MS / 2) {
+				break;
+			}
+
+			if(*cnt / 2 >= led->counterValue()) {
+				//move back time for period await
+				LedWrite((Led*)led, false);
+				*time -= (*cnt + 1) * (LED_COUNTER_BLINK_PERIOD_MS / 2);
+				led->counterState = LED_COUNTER_STATE_AWAIT_PERIOD;
+				break;
+			}
+
+			(*cnt)++;
+			*time = HAL_GetTick();
+			LedToggle((Led*)led);
 			break;
 		}
 		case LED_COUNTER_STATE_AWAIT_PERIOD: {
+			if(HAL_GetTick() - *time > LED_COUNTER_FULL_PERIOD_MS) {
+				led->counterState = LED_COUNTER_STATE_IDLE;
+			}
 			break;
 		}
 	}
