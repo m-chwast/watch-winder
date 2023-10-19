@@ -17,12 +17,10 @@ typedef enum {
 } Modes_TimingMode;
 
 
-void Modes_Main_SetEditActive(void);
-void Modes_Main_SetEditInactive(void);
+void Modes_Main_ToggleEditActive(void);
 void Modes_Main_SetNext(void);
 
-void Modes_Timing_SetEditActive(void);
-void Modes_Timing_SetEditInactive(void);
+void Modes_Timing_ToggleEditActive(void);
 void Modes_Timing_SetNext(void);
 
 

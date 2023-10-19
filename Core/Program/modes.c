@@ -23,12 +23,8 @@ static Mode timingMode;
 
 //button callbacks:
 
-void Modes_Main_SetEditActive(void) {
-	mainMode.editActive = true;
-}
-
-void Modes_Main_SetEditInactive(void) {
-	mainMode.editActive = false;
+void Modes_Main_ToggleEditActive(void) {
+	mainMode.editActive = !mainMode.editActive;
 }
 
 void Modes_Main_SetNext(void) {
@@ -40,12 +36,8 @@ void Modes_Main_SetNext(void) {
 	Console_LogValLn("Main Mode: ", mainMode.value);
 }
 
-void Modes_Timing_SetEditActive(void) {
-	timingMode.editActive = true;
-}
-
-void Modes_Timing_SetEditInactive(void) {
-	timingMode.editActive = false;
+void Modes_Timing_ToggleEditActive(void) {
+	timingMode.editActive = !timingMode.editActive;
 }
 
 void Modes_Timing_SetNext(void) {
