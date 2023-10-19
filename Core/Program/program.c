@@ -10,6 +10,7 @@
 #include "motor.h"
 #include "buttons.h"
 #include "modes.h"
+#include "leds.h"
 
 
 void Program_Init(void) {
@@ -34,4 +35,5 @@ void Program_Loop(void) {
 	*/
 
 	Buttons_Manage();
+	Leds_Manage();
 }
