@@ -44,9 +44,16 @@ void Leds_Manage(void) {
 }
 
 static void LedManage(Led* led) {
-
+	switch(led->state) {
+		case LED_STATE_IDLE: {
+			break;
+		}
+		case LED_STATE_INIT: {
+			break;
+		}
+	}
 }
 
 void Leds_BeginInit(Led* led) {
-
+	led->state = LED_STATE_INIT;
 }
