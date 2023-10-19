@@ -9,6 +9,11 @@
 #include <stdbool.h>
 #include "main.h"
 
+
+#define INIT_BLINK_TIME_MS 1000
+#define INIT_BLINKS_COUNT 2
+
+
 typedef enum {
 	LED_STATE_IDLE,
 	LED_STATE_INIT_START,
@@ -41,6 +46,7 @@ LedCounter led1 = { .led = { .gpio = LED1_GPIO_Port, .pin = LED1_Pin, .type = LE
 
 static void LedManage(Led* led);
 static inline void LedWrite(Led* led, bool ledOn);
+static inline void LedToggle(Led* led);
 
 
 void Leds_Manage(void) {
@@ -55,10 +61,24 @@ static void LedManage(Led* led) {
 		}
 		case LED_STATE_INIT_START: {
 			led->cnt = 0;
+			led->time = HAL_GetTick();
 			led->state = LED_STATE_INIT;
+			LedWrite(led, false);
 			break;
 		}
 		case LED_STATE_INIT: {
+			if(HAL_GetTick() - led->time <= INIT_BLINK_TIME_MS) {
+				break;
+			}
+
+			if(led->cnt / 2 >= INIT_BLINKS_COUNT) {
+				led->state = LED_STATE_INIT_FINISH;
+				break;
+			}
+
+			LedToggle(led);
+			led->time = HAL_GetTick();
+			led->cnt++;
 			break;
 		}
 		case LED_STATE_INIT_FINISH: {
@@ -77,4 +97,8 @@ void Leds_BeginInit(Led* led) {
 static inline void LedWrite(Led* led, bool ledOn) {
 	//leds are assumed to be active-low
 	HAL_GPIO_WritePin(led->gpio, led->pin, !ledOn);
+}
+
+static inline void LedToggle(Led* led) {
+	HAL_GPIO_TogglePin(led->gpio, led->pin);
 }
