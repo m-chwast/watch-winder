@@ -23,7 +23,8 @@ static struct Rtc {
 } rtc;
 
 
-static void PrintTime(void);
+static void PrintTime(const RTC_TimeTypeDef* time);
+static void PrintCurrentTime(void);
 static void GetTime(RTC_TimeTypeDef* time);
 
 
@@ -35,7 +36,7 @@ void RTC_Manage(void) {
 	if(rtc.alarmFlag) {
 		rtc.alarmFlag = false;
 		Console_Log("Alarm! ");
-		PrintTime();
+		PrintCurrentTime();
 		RTC_SetNextAlarm();
 		if(rtc.callbacks.alarm != NULL) {
 			rtc.callbacks.alarm();
@@ -87,19 +88,25 @@ void RTC_SetNextAlarm(void) {
 
 	HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_A);	//this is demanded by HAL
 	HAL_RTC_SetAlarm_IT(&hrtc, &alarm, RTC_FORMAT_BIN);
+
+	Console_Log("Next alarm: ");
+	PrintTime(time);
 }
 
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
 	rtc.alarmFlag = true;
 }
 
-static void PrintTime(void) {
+static void PrintTime(const RTC_TimeTypeDef* time) {
+	Console_LogVal("Time: ", time->Hours);
+	Console_LogVal(":", time->Minutes);
+	Console_LogValLn(":", time->Seconds);
+}
+
+static void PrintCurrentTime() {
 	RTC_TimeTypeDef time;
 	GetTime(&time);
-
-	Console_LogVal("Time: ", time.Hours);
-	Console_LogVal(":", time.Minutes);
-	Console_LogValLn(":", time.Seconds);
+	PrintTime(&time);
 }
 
 static void GetTime(RTC_TimeTypeDef* time) {
