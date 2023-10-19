@@ -50,6 +50,7 @@ void Program_Loop(void) {
 	Program_Manage();
 	Buttons_Manage();
 	Leds_Manage();
+	RTC_Manage();
 }
 
 static void Program_Manage(void) {

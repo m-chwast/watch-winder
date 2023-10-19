@@ -14,12 +14,24 @@
 extern RTC_HandleTypeDef hrtc;
 
 
+static volatile bool alarmFlag;
+
+
 static void PrintTime(void);
 static void GetTime(RTC_TimeTypeDef* time);
 
 
 void RTC_Init(void) {
 	RTC_SetNextAlarm();
+}
+
+void RTC_Manage(void) {
+	if(alarmFlag) {
+		alarmFlag = false;
+		Console_Log("Alarm! ");
+		PrintTime();
+		RTC_SetNextAlarm();
+	}
 }
 
 void RTC_SetNextAlarm(void) {
@@ -57,9 +69,7 @@ void RTC_SetNextAlarm(void) {
 }
 
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
-	Console_Log("Alarm! ");
-	PrintTime();
-	RTC_SetNextAlarm();
+	alarmFlag = true;
 }
 
 static void PrintTime(void) {
