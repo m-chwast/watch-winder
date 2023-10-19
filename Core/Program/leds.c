@@ -46,3 +46,7 @@ void Leds_Manage(void) {
 static void LedManage(Led* led) {
 
 }
+
+void Leds_BeginInit(Led* led) {
+
+}

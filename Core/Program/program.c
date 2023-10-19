@@ -15,6 +15,10 @@
 
 void Program_Init(void) {
 	Console_LogLn("Init");
+
+	Leds_BeginInit(&led0);
+	Leds_BeginInit(&led1);
+
 	Motor_SetSpeed(6);
 
 	Buttons_SetCallbacks(&button0, NULL, Modes_Main_SetNext, Modes_Main_ToggleEditActive);
