@@ -13,6 +13,9 @@
 #include "leds.h"
 
 
+static void Program_Manage(void);
+
+
 void Program_Init(void) {
 	Console_LogLn("Init");
 
@@ -41,6 +44,11 @@ void Program_Loop(void) {
 	HAL_Delay(2000);
 	*/
 
+	Program_Manage();
 	Buttons_Manage();
 	Leds_Manage();
+}
+
+static void Program_Manage(void) {
+
 }
