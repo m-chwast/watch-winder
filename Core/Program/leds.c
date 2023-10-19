@@ -8,6 +8,7 @@
 
 #include <stdbool.h>
 #include "main.h"
+#include "console.h"
 
 
 #define INIT_BLINK_TIME_MS 1000
@@ -32,6 +33,7 @@ typedef struct {
 	Led_Type type;
 	uint32_t time;	//general-purpose led time var
 	uint8_t cnt;	//general-purpose led counter
+	const uint8_t id;
 } Led;
 
 typedef struct {
@@ -39,11 +41,12 @@ typedef struct {
 } LedCounter;
 
 
-LedCounter led0 = { .led = { .gpio = LED0_GPIO_Port, .pin = LED0_Pin, .type = LED_TYPE_COUNTER } };
-LedCounter led1 = { .led = { .gpio = LED1_GPIO_Port, .pin = LED1_Pin, .type = LED_TYPE_COUNTER } };
+LedCounter led0 = { .led = { .id = 0, .gpio = LED0_GPIO_Port, .pin = LED0_Pin, .type = LED_TYPE_COUNTER } };
+LedCounter led1 = { .led = { .id = 1, .gpio = LED1_GPIO_Port, .pin = LED1_Pin, .type = LED_TYPE_COUNTER } };
 
 
 static void LedManage(Led* led);
+static void PrintLedStatus(Led* led, const char* status);
 static inline void LedWrite(Led* led, bool ledOn);
 static inline void LedToggle(Led* led);
 
@@ -59,6 +62,7 @@ static void LedManage(Led* led) {
 			break;
 		}
 		case LED_STATE_INIT_START: {
+			PrintLedStatus(led, "init");
 			led->cnt = 0;
 			led->time = HAL_GetTick();
 			led->state = LED_STATE_INIT;
@@ -75,6 +79,7 @@ static void LedManage(Led* led) {
 				led->cnt = 0;
 				led->time = 0;
 				led->state = LED_STATE_IDLE;
+				PrintLedStatus(led, "init done");
 				break;
 			}
 
@@ -88,6 +93,12 @@ static void LedManage(Led* led) {
 
 void Leds_BeginInit(Led* led) {
 	led->state = LED_STATE_INIT_START;
+}
+
+static void PrintLedStatus(Led* led, const char* status) {
+	Console_LogVal("Led ", led->id);
+	Console_Log(" ");
+	Console_LogLn(status);
 }
 
 static inline void LedWrite(Led* led, bool ledOn) {
