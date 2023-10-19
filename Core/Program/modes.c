@@ -7,8 +7,31 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <math.h>
 #include "modes.h"
 #include "console.h"
+
+
+#define TURNS_PER_DAY_A 600
+#define TURNS_PER_DAY_B 900
+#define TURNS_PER_DAY_C 1200
+#define TURNS_PER_DAY_D 1500
+
+#define RPM_A 3
+#define RPM_B 4
+#define RPM_C 5
+#define RPM_D 5
+
+#define FULL_DAY_SECONDS (24 * 60 * 60)
+#define CYCLE_TIME_A (90 * 60)
+#define CYCLE_TIME_B (75 * 60)
+#define CYCLE_TIME_C (60 * 60)
+#define CYCLE_TIME_D (45 * 60)
+
+#define TURNS_PER_CYCLE_A (ceil(TURNS_PER_DAY_A * CYCLE_TIME_A / FULL_DAY_SECONDS))
+#define TURNS_PER_CYCLE_B (ceil(TURNS_PER_DAY_B * CYCLE_TIME_B / FULL_DAY_SECONDS))
+#define TURNS_PER_CYCLE_C (ceil(TURNS_PER_DAY_C * CYCLE_TIME_C / FULL_DAY_SECONDS))
+#define TURNS_PER_CYCLE_D (ceil(TURNS_PER_DAY_D * CYCLE_TIME_D / FULL_DAY_SECONDS))
 
 
 typedef struct {
@@ -22,23 +45,38 @@ static Mode timingMode;
 
 
 uint32_t Modes_GetCyclePeriod(void) {
-	//TODO
-	return 30;
+	switch(timingMode.value) {
+		case TIMING_MODE_A: {
+			return CYCLE_TIME_A;
+		}
+		case TIMING_MODE_B: {
+			return CYCLE_TIME_B;
+		}
+		case TIMING_MODE_C: {
+			return CYCLE_TIME_C;
+		}
+		case TIMING_MODE_D: {
+			return CYCLE_TIME_D;
+		}
+		default: {
+			return 0;
+		}
+	}
 }
 
 uint32_t Modes_GetRevolutionsPerCycle(void) {
 	switch(timingMode.value) {
 		case TIMING_MODE_A: {
-			return 1;
+			return TURNS_PER_CYCLE_A;
 		}
 		case TIMING_MODE_B: {
-			return 2;
+			return TURNS_PER_CYCLE_B;
 		}
 		case TIMING_MODE_C: {
-			return 3;
+			return TURNS_PER_CYCLE_C;
 		}
 		case TIMING_MODE_D: {
-			return 4;
+			return TURNS_PER_CYCLE_D;
 		}
 		default: {
 			return 0;
