@@ -33,7 +33,7 @@ void Program_Init(void) {
 	Leds_BeginInit(&led0);
 	Leds_BeginInit(&led1);
 
-	Motor_SetSpeed(6);
+	Motor_SetSpeed(MOTOR_RPM_TO_RPH(4));
 
 	Buttons_SetCallbacks(&button0, NULL, Modes_Main_ToggleEditActive, Modes_Main_SetNext, Buttons_EmptyCallback);
 	Buttons_SetCallbacks(&button1, NULL, Modes_Timing_ToggleEditActive, Modes_Timing_SetNext, Buttons_EmptyCallback);
@@ -52,6 +52,7 @@ void Program_Loop(void) {
 static void Program_Manage(void) {
 	if(program.isRotationRequested && Motor_IsRunning() == false) {
 		program.isRotationRequested = false;
+		Motor_SetSpeed(Modes_GetRevolutionsPerHour());
 		uint32_t revolutions = MOTOR_REVOLUTIONS_TO_DEGREES(Modes_GetRevolutionsPerCycle());
 		Motor_SetMovement(revolutions, MOTOR_DIR_CLOCKWISE);
 	}

@@ -21,6 +21,7 @@
 #define RPM_B 4
 #define RPM_C 5
 #define RPM_D 5
+#define RPM_TO_RPH(RPM) ((RPM) * 60)
 
 #define FULL_DAY_SECONDS (24 * 60 * 60)
 #define CYCLE_TIME_A (90 * 60)
@@ -77,6 +78,26 @@ uint32_t Modes_GetRevolutionsPerCycle(void) {
 		}
 		case TIMING_MODE_D: {
 			return TURNS_PER_CYCLE_D;
+		}
+		default: {
+			return 0;
+		}
+	}
+}
+
+uint32_t Modes_GetRevolutionsPerHour(void) {
+	switch(timingMode.value) {
+		case TIMING_MODE_A: {
+			return RPM_TO_RPH(RPM_A);
+		}
+		case TIMING_MODE_B: {
+			return RPM_TO_RPH(RPM_B);
+		}
+		case TIMING_MODE_C: {
+			return RPM_TO_RPH(RPM_C);
+		}
+		case TIMING_MODE_D: {
+			return RPM_TO_RPH(RPM_D);
 		}
 		default: {
 			return 0;

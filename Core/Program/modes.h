@@ -33,8 +33,8 @@ typedef enum {
 
 //gets the period of the whole cycle in current combination of modes in seconds
 uint32_t Modes_GetCyclePeriod(void);
-
 uint32_t Modes_GetRevolutionsPerCycle(void);
+uint32_t Modes_GetRevolutionsPerHour(void);
 
 
 Modes_MainMode Modes_Main_Get(void);

@@ -76,11 +76,11 @@ void Motor_SetMovement(uint32_t degrees, Motor_Dir dir) {
 	Timers_Start(&TIMERS_MOTOR_TIMER);
 }
 
-void Motor_SetSpeed(uint8_t revPerMin) {
-	uint16_t period = (60 * 1000000) / (revPerMin * MOTOR_STEPS_PER_REVOLUTION);
+void Motor_SetSpeed(uint32_t revPerHour) {
+	uint16_t period = ((uint32_t)60 * 60 * 1000000) / (revPerHour * MOTOR_STEPS_PER_REVOLUTION);
 	motor.stepsPeriodUs = period;
-	Console_LogVal("Motor speed: ", revPerMin);
-	Console_LogLn(" rev/min");
+	Console_LogVal("Motor speed: ", revPerHour);
+	Console_LogLn(" rev/hr");
 }
 
 bool Motor_IsRunning(void) {
