@@ -26,6 +26,26 @@ uint32_t Modes_GetCyclePeriod(void) {
 	return 30;
 }
 
+uint32_t Modes_GetRevolutionsPerCycle(void) {
+	switch(timingMode.value) {
+		case TIMING_MODE_A: {
+			return 1;
+		}
+		case TIMING_MODE_B: {
+			return 2;
+		}
+		case TIMING_MODE_C: {
+			return 3;
+		}
+		case TIMING_MODE_D: {
+			return 4;
+		}
+		default: {
+			return 0;
+		}
+	}
+}
+
 Modes_MainMode Modes_Main_Get(void) {
 	return mainMode.value;
 }
