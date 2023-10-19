@@ -21,6 +21,9 @@ typedef enum {
 } Modes_TimingMode;
 
 
+//gets the period of the whole cycle in current combination of modes in seconds
+uint32_t Modes_GetCyclePeriod(void);
+
 Modes_MainMode Modes_Main_Get(void);
 uint8_t Modes_Main_GetIncremented(void);
 bool Modes_Main_GetEditActive(void);

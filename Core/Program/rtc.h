@@ -10,6 +10,7 @@
 
 
 void RTC_Init(void);
+void RTC_SetNextAlarm(void);
 
 
 #endif /* PROGRAM_RTC_H_ */
