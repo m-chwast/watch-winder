@@ -18,7 +18,6 @@ typedef enum {
 	LED_STATE_IDLE,
 	LED_STATE_INIT_START,
 	LED_STATE_INIT,
-	LED_STATE_INIT_FINISH,
 } Led_State;
 
 typedef enum {
@@ -72,19 +71,16 @@ static void LedManage(Led* led) {
 			}
 
 			if(led->cnt / 2 >= INIT_BLINKS_COUNT) {
-				led->state = LED_STATE_INIT_FINISH;
+				//end of initialization
+				led->cnt = 0;
+				led->time = 0;
+				led->state = LED_STATE_IDLE;
 				break;
 			}
 
 			LedToggle(led);
 			led->time = HAL_GetTick();
 			led->cnt++;
-			break;
-		}
-		case LED_STATE_INIT_FINISH: {
-			led->cnt = 0;
-			led->time = 0;
-			led->state = LED_STATE_IDLE;
 			break;
 		}
 	}
