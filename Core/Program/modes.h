@@ -17,6 +17,13 @@ typedef enum {
 } Modes_TimingMode;
 
 
+Modes_MainMode Modes_Main_Get(void);
+Modes_MainMode Modes_Main_GetEditActive(void);
+
+Modes_TimingMode Modes_Timing_Get(void);
+Modes_TimingMode Modes_Timing_GetEditActive(void);
+
+
 void Modes_Main_ToggleEditActive(void);
 void Modes_Main_SetNext(void);
 

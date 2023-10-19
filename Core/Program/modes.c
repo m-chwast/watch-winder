@@ -21,6 +21,23 @@ static Mode mainMode;
 static Mode timingMode;
 
 
+Modes_MainMode Modes_Main_Get(void) {
+	return mainMode.value;
+}
+
+Modes_MainMode Modes_Main_GetEditActive(void) {
+	return mainMode.editActive;
+}
+
+Modes_TimingMode Modes_Timing_Get(void) {
+	return timingMode.value;
+}
+
+Modes_TimingMode Modes_Timing_GetEditActive(void) {
+	return timingMode.editActive;
+}
+
+
 //button callbacks:
 
 void Modes_Main_ToggleEditActive(void) {
