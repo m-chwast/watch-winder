@@ -8,9 +8,14 @@
 #include "main.h"
 #include "rtc.h"
 #include "modes.h"
+#include "console.h"
 
 
 extern RTC_HandleTypeDef hrtc;
+
+
+static void PrintTime(void);
+static void GetTime(RTC_TimeTypeDef* time);
 
 
 void RTC_Init(void) {
@@ -31,7 +36,7 @@ void RTC_SetNextAlarm(void) {
 	};
 
 	RTC_TimeTypeDef* time = &alarm.AlarmTime;
-	HAL_RTC_GetTime(&hrtc, time, RTC_FORMAT_BIN);
+	GetTime(time);
 
 	time->Seconds += secondsToAlarm;
 	time->Minutes += minutes;
@@ -52,5 +57,24 @@ void RTC_SetNextAlarm(void) {
 }
 
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
+	Console_Log("Alarm! ");
+	PrintTime();
+	RTC_SetNextAlarm();
+}
 
+static void PrintTime(void) {
+	RTC_TimeTypeDef time;
+	GetTime(&time);
+
+	Console_LogVal("Time: ", time.Hours);
+	Console_LogVal(":", time.Minutes);
+	Console_LogValLn(":", time.Seconds);
+}
+
+static void GetTime(RTC_TimeTypeDef* time) {
+	HAL_RTC_GetTime(&hrtc, time, RTC_FORMAT_BIN);
+
+	//date read to unlock shadow register
+	RTC_DateTypeDef date;
+	HAL_RTC_GetDate(&hrtc, &date, RTC_FORMAT_BCD);
 }
