@@ -6,6 +6,7 @@
  */
 
 
+#include <stdbool.h>
 #include "main.h"
 
 typedef enum {
@@ -36,6 +37,7 @@ LedCounter led1 = { .led = { .gpio = LED1_GPIO_Port, .pin = LED1_Pin, .type = LE
 
 
 static void LedManage(Led* led);
+static inline void LedWrite(Led* led, bool ledOn);
 
 
 void Leds_Manage(void) {
@@ -56,4 +58,9 @@ static void LedManage(Led* led) {
 
 void Leds_BeginInit(Led* led) {
 	led->state = LED_STATE_INIT;
+}
+
+static inline void LedWrite(Led* led, bool ledOn) {
+	//leds are assumed to be active-low
+	HAL_GPIO_WritePin(led->gpio, led->pin, !ledOn);
 }
