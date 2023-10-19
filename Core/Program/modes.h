@@ -38,11 +38,11 @@ uint32_t Modes_GetRevolutionsPerHour(void);
 
 
 Modes_MainMode Modes_Main_Get(void);
-uint8_t Modes_Main_GetIncremented(void);
+uint8_t Modes_Main_GetIncrementedTmp(void);
 bool Modes_Main_GetEditActive(void);
 
 Modes_TimingMode Modes_Timing_Get(void);
-uint8_t Modes_Timing_GetIncremented(void);
+uint8_t Modes_Timing_GetIncrementedTmp(void);
 bool Modes_Timing_GetEditActive(void);
 
 

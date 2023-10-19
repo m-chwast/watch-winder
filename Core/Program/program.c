@@ -30,8 +30,8 @@ void Program_Init(void) {
 	Buttons_SetCallbacks(&button0, NULL, Modes_Main_ToggleEditActive, Modes_Main_SetNext, Buttons_EmptyCallback);
 	Buttons_SetCallbacks(&button1, NULL, Modes_Timing_ToggleEditActive, Modes_Timing_SetNext, Buttons_EmptyCallback);
 
-	Leds_LedCounterSetup(&led0, Modes_Main_GetEditActive, Modes_Main_GetIncremented);
-	Leds_LedCounterSetup(&led1, Modes_Timing_GetEditActive, Modes_Timing_GetIncremented);
+	Leds_LedCounterSetup(&led0, Modes_Main_GetEditActive, Modes_Main_GetIncrementedTmp);
+	Leds_LedCounterSetup(&led1, Modes_Timing_GetEditActive, Modes_Timing_GetIncrementedTmp);
 }
 
 void Program_Loop(void) {
