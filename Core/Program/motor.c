@@ -34,6 +34,7 @@
 #define DEGREES_TO_STEPS(DEG) ((DEG) * MOTOR_STEPS_PER_REVOLUTION / 360)
 
 
+static void Motor_Step(Motor_Dir dir);
 static void MotorPinsWrite(uint32_t setMask);
 static inline void MotorPowerOff(void);
 
@@ -124,7 +125,7 @@ void Motor_RequestStop(void) {
 
 }
 
-void Motor_Step(Motor_Dir dir) {
+static void Motor_Step(Motor_Dir dir) {
 	//assert correct mode selection
 	static_assert((DRIVE_WAVE && DRIVE_FULL_STEP) == false);
 	static_assert((DRIVE_WAVE && DRIVE_HALF_STEP) == false);
