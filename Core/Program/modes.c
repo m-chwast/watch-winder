@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "modes.h"
+#include "console.h"
 
 
 typedef struct {
@@ -31,7 +32,12 @@ void Modes_Main_SetEditInactive(void) {
 }
 
 void Modes_Main_SetNext(void) {
-
+	if(mainMode.editActive == false) {
+		return;
+	}
+	mainMode.value++;
+	mainMode.value %= MAIN_MODE_COUNT;
+	Console_LogValLn("Main Mode: ", mainMode.value);
 }
 
 void Modes_Timing_SetEditActive(void) {
@@ -43,5 +49,10 @@ void Modes_Timing_SetEditInactive(void) {
 }
 
 void Modes_Timing_SetNext(void) {
-
+	if(timingMode.editActive == false) {
+		return;
+	}
+	timingMode.value++;
+	timingMode.value %= TIMING_MODE_COUNT;
+	Console_LogValLn("Timing Mode: ", timingMode.value);
 }
