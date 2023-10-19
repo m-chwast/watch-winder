@@ -31,6 +31,7 @@ typedef struct {
 	uint32_t startTime;	//used for debouncing and for long pressing check
 
 	Buttons_Callback onPressed;
+	Buttons_Callback onLongPressed;
 	Buttons_Callback onReleased;
 	Buttons_Callback onReleasedLate;	//called when released after long pressing
 } Button;
@@ -48,8 +49,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
 }
 
-void Buttons_SetCallbacks(Button* button, Buttons_Callback onPressed, Buttons_Callback onReleased, Buttons_Callback onReleasedLate) {
+void Buttons_SetCallbacks(Button* button, Buttons_Callback onPressed, Buttons_Callback onLongPressed,
+		Buttons_Callback onReleased, Buttons_Callback onReleasedLate) {
 	button->onPressed = onPressed;
+	button->onLongPressed = onLongPressed;
 	button->onReleased = onReleased;
 	button->onReleasedLate = onReleasedLate;
 }

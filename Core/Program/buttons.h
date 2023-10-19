@@ -20,7 +20,8 @@ extern Button button1;
 
 void Buttons_Manage(void);
 
-void Buttons_SetCallbacks(Button* button, Buttons_Callback onPressed, Buttons_Callback onReleased, Buttons_Callback onReleasedLate);
+void Buttons_SetCallbacks(Button* button, Buttons_Callback onPressed, Buttons_Callback onLongPressed,
+		Buttons_Callback onReleased, Buttons_Callback onReleasedLate);
 
 
 #endif /* PROGRAM_BUTTONS_H_ */
