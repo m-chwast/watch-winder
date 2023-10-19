@@ -22,6 +22,12 @@ typedef enum {
 } Led_State;
 
 typedef enum {
+	LED_COUNTER_STATE_IDLE,
+	LED_COUNTER_STATE_BLINK,
+	LED_COUNTER_STATE_AWAIT_PERIOD,
+} LedCounter_State;
+
+typedef enum {
 	LED_TYPE_STD,
 	LED_TYPE_COUNTER,
 } Led_Type;
@@ -38,6 +44,7 @@ typedef struct {
 
 typedef struct {
 	Led led;
+	LedCounter_State counterState;
 } LedCounter;
 
 
@@ -103,7 +110,17 @@ static void LedManage(Led* led) {
 }
 
 static void LedCounterManage(LedCounter* led) {
-
+	switch(led->counterState) {
+		case LED_COUNTER_STATE_IDLE: {
+			break;
+		}
+		case LED_COUNTER_STATE_BLINK: {
+			break;
+		}
+		case LED_COUNTER_STATE_AWAIT_PERIOD: {
+			break;
+		}
+	}
 }
 
 void Leds_BeginInit(Led* led) {
