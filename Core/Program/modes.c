@@ -37,6 +37,7 @@
 
 typedef struct {
 	uint8_t value;
+	uint8_t tmpValue;
 	bool editActive;
 } Mode;
 
@@ -134,28 +135,40 @@ bool Modes_Timing_GetEditActive(void) {
 
 void Modes_Main_ToggleEditActive(void) {
 	mainMode.editActive = !mainMode.editActive;
-	Console_LogValLn("Main Mode edit: ", mainMode.editActive);
+	Console_LogValLn("Main Mode edit: ", Modes_Main_GetEditActive());
+	if(Modes_Main_GetEditActive()) {
+		mainMode.tmpValue = mainMode.value;
+	}
+	else {
+		mainMode.value = mainMode.tmpValue;
+	}
 }
 
 void Modes_Main_SetNext(void) {
 	if(mainMode.editActive == false) {
 		return;
 	}
-	mainMode.value++;
-	mainMode.value %= MAIN_MODE_COUNT;
-	Console_LogValLn("Main Mode: ", mainMode.value);
+	mainMode.tmpValue++;
+	mainMode.tmpValue %= MAIN_MODE_COUNT;
+	Console_LogValLn("Main Mode: ", mainMode.tmpValue);
 }
 
 void Modes_Timing_ToggleEditActive(void) {
 	timingMode.editActive = !timingMode.editActive;
-	Console_LogValLn("Timing Mode edit: ", timingMode.editActive);
+	Console_LogValLn("Timing Mode edit: ", Modes_Timing_GetEditActive());
+	if(Modes_Timing_GetEditActive()) {
+		timingMode.tmpValue = timingMode.value;
+	}
+	else {
+		timingMode.value = timingMode.tmpValue;
+	}
 }
 
 void Modes_Timing_SetNext(void) {
 	if(timingMode.editActive == false) {
 		return;
 	}
-	timingMode.value++;
-	timingMode.value %= TIMING_MODE_COUNT;
-	Console_LogValLn("Timing Mode: ", timingMode.value);
+	timingMode.tmpValue++;
+	timingMode.tmpValue %= TIMING_MODE_COUNT;
+	Console_LogValLn("Timing Mode: ", timingMode.tmpValue);
 }
