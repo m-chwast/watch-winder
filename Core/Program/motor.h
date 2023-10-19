@@ -28,6 +28,8 @@ void Motor_SetSpeed(uint32_t revPerHour);
 
 bool Motor_IsRunning(void);
 
+void Motor_RequestStop(void);
+
 void Motor_IRQHandler(void);
 
 #endif /* PROGRAM_MOTOR_H_ */

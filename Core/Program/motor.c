@@ -120,6 +120,10 @@ void Motor_IRQHandler(void) {
 	}
 }
 
+void Motor_RequestStop(void) {
+
+}
+
 void Motor_Step(Motor_Dir dir) {
 	//assert correct mode selection
 	static_assert((DRIVE_WAVE && DRIVE_FULL_STEP) == false);

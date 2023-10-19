@@ -16,6 +16,8 @@ typedef enum {
 	WW_STATE_IDLE,
 	WW_STATE_ROTATION_INIT,
 	WW_STATE_ROTATION,
+	WW_STATE_STOP,
+	WW_STATE_STOPPING,
 } WatchWinderState;
 
 static struct WatchWinder {
@@ -124,6 +126,21 @@ void WatchWinder_Manage(void) {
 			}
 			break;
 		}
+		case WW_STATE_STOP: {
+			if(Motor_IsRunning()) {
+				Motor_RequestStop();
+			}
+			watchWinder.turnsRemainingClockwise = 0;
+			watchWinder.turnsRemainingCounterclockwise = 0;
+			watchWinder.state = WW_STATE_STOPPING;
+			break;
+		}
+		case WW_STATE_STOPPING: {
+			if(Motor_IsRunning() == false) {
+				watchWinder.state = WW_STATE_IDLE;
+			}
+			break;
+		}
 	}
 }
 
@@ -134,4 +151,5 @@ void WatchWinder_SetRotationRequest(void) {
 void WatchWinder_Refresh(void) {
 	WatchWinder_SetRotationRequest();
 	RTC_SetNextAlarm();
+	watchWinder.state = WW_STATE_STOP;
 }
