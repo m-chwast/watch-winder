@@ -13,11 +13,15 @@
 typedef enum {
 	WW_STATE_IDLE,
 	WW_STATE_ROTATION_INIT,
+	WW_STATE_ROTATION,
 } WatchWinderState;
 
 static struct WatchWinder {
 	WatchWinderState state;
 	bool isRotationRequested;
+	bool previousCycleWasClockwise;
+	uint16_t turnsRemainingClockwise;
+	uint16_t turnsRemainingCounterclockwise;
 } watchWinder;
 
 
@@ -40,6 +44,48 @@ void WatchWinder_Manage(void) {
 			break;
 		}
 		case WW_STATE_ROTATION_INIT: {
+			Motor_SetSpeed(Modes_GetRevolutionsPerHour());
+			uint16_t turnsClockwise = 0, turnsCounterclockwise = 0;
+			uint16_t turnsRequested = Modes_GetRevolutionsPerCycle();
+			switch(Modes_Main_Get()) {
+				case MAIN_MODE_CLOCKWISE: {
+					turnsClockwise = turnsRequested;
+					break;
+				}
+				case MAIN_MODE_ANTICLOCKWISE: {
+					turnsCounterclockwise = turnsRequested;
+					break;
+				}
+				case MAIN_MODE_MIX_A: {
+					if(watchWinder.previousCycleWasClockwise) {
+						turnsCounterclockwise = turnsRequested;
+					}
+					else {
+						turnsClockwise = turnsRequested;
+					}
+					watchWinder.previousCycleWasClockwise = !watchWinder.previousCycleWasClockwise;
+					break;
+				}
+				case MAIN_MODE_MIX_B: {
+					turnsClockwise = turnsRequested / 2;
+					turnsCounterclockwise = turnsRequested / 2;
+					if(turnsRequested % 2) {
+						if(watchWinder.previousCycleWasClockwise) {
+							turnsClockwise++;
+						}
+						else {
+							turnsCounterclockwise++;
+						}
+					}
+					watchWinder.previousCycleWasClockwise = !watchWinder.previousCycleWasClockwise;
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+			watchWinder.turnsRemainingClockwise = turnsClockwise;
+			watchWinder.turnsRemainingCounterclockwise = turnsCounterclockwise;
 			break;
 		}
 	}
