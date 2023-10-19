@@ -34,6 +34,8 @@ typedef struct {
 	Buttons_Callback onLongPressed;
 	Buttons_Callback onReleased;
 	Buttons_Callback onReleasedLate;	//called when released after long pressing
+
+	bool onLongPressedCalled;
 } Button;
 
 
@@ -81,18 +83,28 @@ static void ButtonManage(Button* button) {
 		}
 		case BUTTON_STATE_DEBOUNCING_PRESSED: {
 			if(HAL_GetTick() - button->startTime > DEBOUNCING_TIME_MS) {
+				button->onLongPressedCalled = false;
 				button->startTime = HAL_GetTick();
 				button->state = BUTTON_STATE_PRESSED;
 			}
 			break;
 		}
 		case BUTTON_STATE_PRESSED: {
+			bool longPressing = HAL_GetTick() - button->startTime > LONG_PRESSING_TIME_MS;
+
 			if(HAL_GPIO_ReadPin(button->gpio, button->pin) == GPIO_PIN_RESET) {
-				//buttons are active low, so this is pressed condition -> do nothing
+				//buttons are active low, so this is pressed condition
+
+				if(longPressing && button->onLongPressedCalled == false) {
+					PrintButtonStatus(button, "long pressed");
+					button->onLongPressedCalled = true;
+					if(button->onLongPressed) {
+						button->onLongPressed();
+					}
+				}
 				break;
 			}
 
-			bool longPressing = HAL_GetTick() - button->startTime > LONG_PRESSING_TIME_MS;
 
 			button->startTime = HAL_GetTick();
 			button->state = BUTTON_STATE_DEBOUNCING_RELEASED;
