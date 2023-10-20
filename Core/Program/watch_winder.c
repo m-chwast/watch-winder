@@ -144,6 +144,12 @@ void WatchWinder_Manage(void) {
 			break;
 		}
 		case WW_STATE_CONSTANT_ROTATION: {
+			if(Motor_IsRunning()) {
+				break;
+			}
+
+			Motor_Dir dir = watchWinder.previousCycleWasClockwise ? MOTOR_DIR_CLOCKWISE : MOTOR_DIR_ANTICLOCKWISE;
+			Motor_SetMovementInfinite(dir);
 			break;
 		}
 		case WW_STATE_STOP: {

@@ -83,6 +83,7 @@ void Motor_SetMovementInfinite(Motor_Dir dir) {
 	//set some revolutions for correct ramps calculation
 	Motor_SetMovement(MOTOR_REVOLUTIONS_TO_DEGREES(10), dir);
 	motor.isInfiniteMotion = true;
+	Console_LogLn("Motor infinite movement set");
 }
 
 void Motor_SetSpeed(uint32_t revPerHour) {
