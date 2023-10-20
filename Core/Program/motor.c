@@ -122,7 +122,10 @@ void Motor_IRQHandler(void) {
 }
 
 void Motor_RequestStop(void) {
-
+	if(motor.stepsLeft <= motor.ramp.finishPulses) {
+		return;	//already stopping
+	}
+	motor.stepsLeft = motor.ramp.startPulsesLeft + motor.ramp.finishPulses;
 }
 
 static void Motor_Step(Motor_Dir dir) {
