@@ -16,6 +16,7 @@ typedef enum {
 	WW_STATE_IDLE,
 	WW_STATE_ROTATION_INIT,
 	WW_STATE_ROTATION,
+	WW_STATE_CONSTANT_ROTATION,
 	WW_STATE_STOP,
 	WW_STATE_STOPPING,
 } WatchWinderState;
@@ -42,6 +43,7 @@ void WatchWinder_Manage(void) {
 			Motor_SetSpeed(Modes_GetRevolutionsPerHour());
 			uint16_t turnsClockwise = 0, turnsCounterclockwise = 0;
 			uint16_t turnsRequested = Modes_GetRevolutionsPerCycle();
+			bool setConstantRotation = false;
 			switch(Modes_Main_Get()) {
 				case MAIN_MODE_CLOCKWISE: {
 					turnsClockwise = turnsRequested;
@@ -77,6 +79,16 @@ void WatchWinder_Manage(void) {
 					watchWinder.previousCycleWasClockwise = !watchWinder.previousCycleWasClockwise;
 					break;
 				}
+				case MAIN_MODE_CONSTANT_CLOCKWISE: {
+					watchWinder.previousCycleWasClockwise = true;
+					setConstantRotation = true;
+					break;
+				}
+				case MAIN_MODE_CONSTANT_ANTICLOCKWISE: {
+					watchWinder.previousCycleWasClockwise = false;
+					setConstantRotation = true;
+					break;
+				}
 				default: {
 					break;
 				}
@@ -84,7 +96,12 @@ void WatchWinder_Manage(void) {
 			Console_LogValLn("Starting rotation. Turns: ", turnsRequested);
 			watchWinder.turnsRemainingClockwise = turnsClockwise;
 			watchWinder.turnsRemainingCounterclockwise = turnsCounterclockwise;
-			watchWinder.state = WW_STATE_ROTATION;
+			if(setConstantRotation) {
+				watchWinder.state = WW_STATE_CONSTANT_ROTATION;
+			}
+			else {
+				watchWinder.state = WW_STATE_ROTATION;
+			}
 			break;
 		}
 		case WW_STATE_ROTATION: {
@@ -124,6 +141,9 @@ void WatchWinder_Manage(void) {
 			else {
 				Motor_SetMovement(MOTOR_REVOLUTIONS_TO_DEGREES(turns), dir);
 			}
+			break;
+		}
+		case WW_STATE_CONSTANT_ROTATION: {
 			break;
 		}
 		case WW_STATE_STOP: {
