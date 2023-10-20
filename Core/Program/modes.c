@@ -51,7 +51,7 @@ static Mode timingMode;
 
 static bool IsConstantMode(void) {
 	if(Modes_Main_Get() == MAIN_MODE_CONSTANT_CLOCKWISE ||
-			Modes_Main_Get() == MAIN_MODE_ANTICLOCKWISE) {
+			Modes_Main_Get() == MAIN_MODE_CONSTANT_ANTICLOCKWISE) {
 		return true;
 	}
 	return false;
