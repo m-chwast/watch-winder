@@ -62,6 +62,7 @@ void RTC_SetNextAlarm(void) {
 
 	uint32_t secondsToAlarm = rtc.callbacks.periodSeconds();
 	if(secondsToAlarm == FULL_DAY_SECONDS) {
+		HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_A);
 		Console_LogLn("No alarm set");
 		return;
 	}
