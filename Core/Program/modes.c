@@ -58,6 +58,10 @@ static bool IsConstantMode(void) {
 }
 
 uint32_t Modes_GetCyclePeriod(void) {
+	if(IsConstantMode()) {
+		return FULL_DAY_SECONDS;
+	}
+
 	switch(Modes_Timing_Get()) {
 		case TIMING_MODE_A: {
 			return CYCLE_TIME_A;

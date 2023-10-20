@@ -11,6 +11,9 @@
 #include "console.h"
 
 
+#define FULL_DAY_SECONDS (24 * 60 * 60)
+
+
 extern RTC_HandleTypeDef hrtc;
 
 
@@ -58,6 +61,10 @@ void RTC_SetNextAlarm(void) {
 	}
 
 	uint32_t secondsToAlarm = rtc.callbacks.periodSeconds();
+	if(secondsToAlarm == FULL_DAY_SECONDS) {
+		Console_LogLn("No alarm set");
+		return;
+	}
 
 	uint8_t hours = secondsToAlarm / 3600;
 	secondsToAlarm -= hours * 3600;
