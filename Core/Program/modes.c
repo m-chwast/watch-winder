@@ -24,6 +24,8 @@
 #define RPM_D 5
 #define RPM_TO_RPH(RPM) ((RPM) * 60)
 
+#define RPH_CONSTANT(TPD) (ceil((TPD) / 24))
+
 #define FULL_DAY_SECONDS (24 * 60 * 60)
 #define CYCLE_TIME_A (90 * 60)
 #define CYCLE_TIME_B (75 * 60)
@@ -46,6 +48,14 @@ typedef struct {
 static Mode mainMode;
 static Mode timingMode;
 
+
+static bool IsConstantMode(void) {
+	if(Modes_Main_Get() == MAIN_MODE_CONSTANT_CLOCKWISE ||
+			Modes_Main_Get() == MAIN_MODE_ANTICLOCKWISE) {
+		return true;
+	}
+	return false;
+}
 
 uint32_t Modes_GetCyclePeriod(void) {
 	switch(Modes_Timing_Get()) {
@@ -88,6 +98,26 @@ uint32_t Modes_GetRevolutionsPerCycle(void) {
 }
 
 uint32_t Modes_GetRevolutionsPerHour(void) {
+	if(IsConstantMode()) {
+		switch(Modes_Timing_Get()) {
+			case TIMING_MODE_A: {
+				return RPH_CONSTANT(TURNS_PER_DAY_A);
+			}
+			case TIMING_MODE_B: {
+				return RPH_CONSTANT(TURNS_PER_DAY_B);
+			}
+			case TIMING_MODE_C: {
+				return RPH_CONSTANT(TURNS_PER_DAY_C);
+			}
+			case TIMING_MODE_D: {
+				return RPH_CONSTANT(TURNS_PER_DAY_D);
+			}
+			default: {
+				return 0;
+			}
+		}
+	}
+
 	switch(Modes_Timing_Get()) {
 		case TIMING_MODE_A: {
 			return RPM_TO_RPH(RPM_A);
