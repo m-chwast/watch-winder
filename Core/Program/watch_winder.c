@@ -176,6 +176,6 @@ void WatchWinder_SetRotationRequest(void) {
 
 void WatchWinder_Refresh(void) {
 	WatchWinder_SetRotationRequest();
-	RTC_SetNextAlarm();
+	RTC_Init();
 	watchWinder.state = WW_STATE_STOP;
 }

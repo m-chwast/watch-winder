@@ -20,7 +20,6 @@ void Program_Init(void) {
 
 	RTC_SetupPeriodCallback(Modes_GetCyclePeriod);
 	RTC_SetupAlarmCallback(WatchWinder_SetRotationRequest);
-	RTC_Init();
 
 	Leds_BeginInit(&led0);
 	Leds_BeginInit(&led1);
@@ -32,6 +31,8 @@ void Program_Init(void) {
 
 	Leds_LedCounterSetup(&led0, Modes_Main_GetEditActive, Modes_Main_GetIncrementedTmp);
 	Leds_LedCounterSetup(&led1, Modes_Timing_GetEditActive, Modes_Timing_GetIncrementedTmp);
+
+	WatchWinder_Refresh();
 }
 
 void Program_Loop(void) {
