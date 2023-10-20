@@ -23,6 +23,7 @@ typedef enum {
 
 
 void Motor_SetMovement(uint32_t degrees, Motor_Dir dir);
+void Motor_SetMovementInfinite(Motor_Dir dir);
 void Motor_SetSpeed(uint32_t revPerHour);
 
 bool Motor_IsRunning(void);

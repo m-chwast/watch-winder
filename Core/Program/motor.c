@@ -43,6 +43,7 @@ volatile struct Motor {
 	uint32_t stepsLeft;
 	Motor_Dir dir;
 	bool isRunning;
+	bool isInfiniteMotion;
 	uint32_t stepsPeriodUs;
 
 	struct Ramp {
@@ -61,6 +62,7 @@ void Motor_SetMovement(uint32_t degrees, Motor_Dir dir) {
 		return;
 	}
 
+	motor.isInfiniteMotion = false;
 	motor.stepsLeft = DEGREES_TO_STEPS(degrees);
 	motor.dir = dir;
 	Console_LogValLn("Motor steps set to ", motor.stepsLeft);
@@ -75,6 +77,12 @@ void Motor_SetMovement(uint32_t degrees, Motor_Dir dir) {
 
 	motor.isRunning = true;
 	Timers_Start(&TIMERS_MOTOR_TIMER);
+}
+
+void Motor_SetMovementInfinite(Motor_Dir dir) {
+	//set some revolutions for correct ramps calculation
+	Motor_SetMovement(MOTOR_REVOLUTIONS_TO_DEGREES(10), dir);
+	motor.isInfiniteMotion = true;
 }
 
 void Motor_SetSpeed(uint32_t revPerHour) {
@@ -112,7 +120,9 @@ void Motor_IRQHandler(void) {
 		uint16_t period = (uint32_t)motor.stepsPeriodUs * 100 / speedPercent;
 		TIMERS_MOTOR_TIMER.Instance->CCR1 += period;
 		Motor_Step(motor.dir);
-		motor.stepsLeft--;
+		if(motor.isInfiniteMotion == false) {
+			motor.stepsLeft--;
+		}
 	}
 	else {
 		Timers_Stop(&TIMERS_MOTOR_TIMER);
@@ -122,6 +132,7 @@ void Motor_IRQHandler(void) {
 }
 
 void Motor_RequestStop(void) {
+	motor.isInfiniteMotion = false;
 	if(motor.stepsLeft <= motor.ramp.finishPulses) {
 		return;	//already stopping
 	}
