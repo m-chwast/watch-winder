@@ -116,20 +116,24 @@ void WatchWinder_Manage(void) {
 			if(watchWinder.previousCycleWasClockwise) {
 				if(watchWinder.turnsRemainingClockwise) {
 					turns = watchWinder.turnsRemainingClockwise;
+					watchWinder.turnsRemainingClockwise = 0;
 					dir = MOTOR_DIR_CLOCKWISE;
 				}
 				else if(watchWinder.turnsRemainingCounterclockwise) {
 					turns = watchWinder.turnsRemainingCounterclockwise;
+					watchWinder.turnsRemainingCounterclockwise = 0;
 					dir = MOTOR_DIR_ANTICLOCKWISE;
 				}
 			}
 			else {
 				if(watchWinder.turnsRemainingCounterclockwise) {
 					turns = watchWinder.turnsRemainingCounterclockwise;
+					watchWinder.turnsRemainingCounterclockwise = 0;
 					dir = MOTOR_DIR_ANTICLOCKWISE;
 				}
 				else if(watchWinder.turnsRemainingClockwise) {
 					turns = watchWinder.turnsRemainingClockwise;
+					watchWinder.turnsRemainingClockwise = 0;
 					dir = MOTOR_DIR_CLOCKWISE;
 				}
 			}
