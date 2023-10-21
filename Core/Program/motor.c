@@ -34,13 +34,16 @@
 #define DEGREES_TO_STEPS(DEG) ((DEG) * MOTOR_STEPS_PER_REVOLUTION / 360)
 
 
+static void Motor_Step(Motor_Dir dir);
 static void MotorPinsWrite(uint32_t setMask);
+static inline void MotorPowerOff(void);
 
 
 volatile struct Motor {
 	uint32_t stepsLeft;
 	Motor_Dir dir;
 	bool isRunning;
+	bool isInfiniteMotion;
 	uint32_t stepsPeriodUs;
 
 	struct Ramp {
@@ -59,6 +62,7 @@ void Motor_SetMovement(uint32_t degrees, Motor_Dir dir) {
 		return;
 	}
 
+	motor.isInfiniteMotion = false;
 	motor.stepsLeft = DEGREES_TO_STEPS(degrees);
 	motor.dir = dir;
 	Console_LogValLn("Motor steps set to ", motor.stepsLeft);
@@ -75,11 +79,18 @@ void Motor_SetMovement(uint32_t degrees, Motor_Dir dir) {
 	Timers_Start(&TIMERS_MOTOR_TIMER);
 }
 
-void Motor_SetSpeed(uint8_t revPerMin) {
-	uint16_t period = (60 * 1000000) / (revPerMin * MOTOR_STEPS_PER_REVOLUTION);
+void Motor_SetMovementInfinite(Motor_Dir dir) {
+	//set some revolutions for correct ramps calculation
+	Motor_SetMovement(MOTOR_REVOLUTIONS_TO_DEGREES(10), dir);
+	motor.isInfiniteMotion = true;
+	Console_LogLn("Motor infinite movement set");
+}
+
+void Motor_SetSpeed(uint32_t revPerHour) {
+	uint16_t period = ((uint32_t)60 * 60 * 1000000) / (revPerHour * MOTOR_STEPS_PER_REVOLUTION);
 	motor.stepsPeriodUs = period;
-	Console_LogVal("Motor speed: ", revPerMin);
-	Console_LogLn(" rev/min");
+	Console_LogVal("Motor speed: ", revPerHour);
+	Console_LogLn(" rev/hr");
 }
 
 bool Motor_IsRunning(void) {
@@ -110,15 +121,26 @@ void Motor_IRQHandler(void) {
 		uint16_t period = (uint32_t)motor.stepsPeriodUs * 100 / speedPercent;
 		TIMERS_MOTOR_TIMER.Instance->CCR1 += period;
 		Motor_Step(motor.dir);
-		motor.stepsLeft--;
+		if(motor.isInfiniteMotion == false) {
+			motor.stepsLeft--;
+		}
 	}
 	else {
 		Timers_Stop(&TIMERS_MOTOR_TIMER);
+		MotorPowerOff();
 		motor.isRunning = false;
 	}
 }
 
-void Motor_Step(Motor_Dir dir) {
+void Motor_RequestStop(void) {
+	motor.isInfiniteMotion = false;
+	if(motor.stepsLeft <= motor.ramp.finishPulses) {
+		return;	//already stopping
+	}
+	motor.stepsLeft = motor.ramp.startPulsesLeft + motor.ramp.finishPulses;
+}
+
+static void Motor_Step(Motor_Dir dir) {
 	//assert correct mode selection
 	static_assert((DRIVE_WAVE && DRIVE_FULL_STEP) == false);
 	static_assert((DRIVE_WAVE && DRIVE_HALF_STEP) == false);
@@ -222,4 +244,8 @@ static void MotorPinsWrite(uint32_t setMask) {
 	resetMask &= ~(setMask);
 	HAL_GPIO_WritePin(MOTOR_OUT1_GPIO_Port, resetMask, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(MOTOR_OUT1_GPIO_Port, setMask, GPIO_PIN_SET);
+}
+
+static inline void MotorPowerOff(void) {
+	MotorPinsWrite(0);
 }
