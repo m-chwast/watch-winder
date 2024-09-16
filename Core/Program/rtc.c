@@ -84,7 +84,7 @@ void RTC_SetNextAlarm(void) {
 	time->Minutes += minutes;
 	time->Hours += hours;
 
-	//handle time overflows for seconds and minutes
+	// handle time overflows
 	if(time->Seconds > 59) {
 		time->Seconds -= 60;
 		time->Minutes++;
@@ -92,6 +92,14 @@ void RTC_SetNextAlarm(void) {
 	if(time->Minutes > 59) {
 		time->Minutes -= 60;
 		time->Hours++;
+	}
+
+	if(time->Hours > 23) {
+		time->Hours -= 24;
+		// something went really wrong here, just reset the hours
+		if(time->Hours > 23) {
+			time->Hours = 0;
+		}
 	}
 
 	HAL_RTC_DeactivateAlarm(&hrtc, RTC_ALARM_A);	//this is demanded by HAL
