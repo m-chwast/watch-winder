@@ -1949,6 +1949,16 @@
 	)
 	(wire
 		(pts
+			(xy 123.19 74.93) (xy 124.46 74.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "482fb7fa-5429-47a2-8cdd-89e75a0d1eb8")
+	)
+	(wire
+		(pts
 			(xy 97.79 41.91) (xy 97.79 40.64)
 		)
 		(stroke
@@ -2006,6 +2016,16 @@
 			(type default)
 		)
 		(uuid "653881f2-f3bf-4ba1-9c8c-63daf2118232")
+	)
+	(wire
+		(pts
+			(xy 123.19 72.39) (xy 124.46 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "66454a4f-bc81-44e1-9a7a-7c1340862187")
 	)
 	(wire
 		(pts
@@ -2229,6 +2249,36 @@
 	)
 	(wire
 		(pts
+			(xy 157.48 63.5) (xy 162.56 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d1cdc7f5-c2ad-4963-843e-d0e4177c3830")
+	)
+	(wire
+		(pts
+			(xy 147.32 60.96) (xy 149.86 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dac82272-ba5e-4044-9cbd-13281f711b62")
+	)
+	(wire
+		(pts
+			(xy 147.32 63.5) (xy 149.86 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dca7a141-b1c6-4f27-9249-f574d12a44e2")
+	)
+	(wire
+		(pts
 			(xy 105.41 40.64) (xy 105.41 41.91)
 		)
 		(stroke
@@ -2299,6 +2349,16 @@
 	)
 	(wire
 		(pts
+			(xy 157.48 60.96) (xy 162.56 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fccef9b4-181b-47e4-b4d9-7c184c59560a")
+	)
+	(wire
+		(pts
 			(xy 82.55 40.64) (xy 82.55 41.91)
 		)
 		(stroke
@@ -2327,6 +2387,36 @@
 		)
 		(uuid "173ba9da-08e0-4909-9044-6ed93877cb85")
 	)
+	(label "UART_TX"
+		(at 147.32 60.96 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2280eb63-7ee5-4025-b77f-1e344fd66001")
+	)
+	(label "UART_TX"
+		(at 124.46 72.39 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4e9558cc-eb77-446f-a92e-04318bfe073f")
+	)
+	(label "UART_RX"
+		(at 124.46 74.93 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "504a9e49-24b8-454c-9c25-a091337c47b4")
+	)
 	(label "SWD_CLK"
 		(at 124.46 85.09 0)
 		(effects
@@ -2336,6 +2426,16 @@
 			(justify left bottom)
 		)
 		(uuid "9c8c99ca-e443-4908-a518-d455c3740e4a")
+	)
+	(label "UART_RX"
+		(at 147.32 63.5 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c59e4d38-f64c-48d1-9a6f-69b8fe45ef42")
 	)
 	(label "SWD_IO"
 		(at 124.46 82.55 0)
@@ -2621,6 +2721,82 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:Conn_01x04_Pin")
+		(at 167.64 63.5 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1d9fa925-ee90-4529-b448-80c37767711c")
+		(property "Reference" "J2"
+			(at 168.91 60.9599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "UART"
+			(at 168.91 63.4999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal"
+			(at 167.64 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 167.64 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x04, script generated"
+			(at 167.64 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "4"
+			(uuid "9be30c80-d5fb-42dc-8cf4-b6cebd8f44bc")
+		)
+		(pin "1"
+			(uuid "520b734e-78cd-48ea-a84f-6571085e87f6")
+		)
+		(pin "3"
+			(uuid "78a9dea0-732c-443d-b60b-8c1817eb9806")
+		)
+		(pin "2"
+			(uuid "7daf9875-9b70-4bec-9c4f-391b5735d5d2")
+		)
+		(instances
+			(project "watch-winder"
+				(path "/e4615983-86dc-4379-93ce-772c86486517"
+					(reference "J2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 90.17 41.91 0)
 		(unit 1)
@@ -2810,6 +2986,71 @@
 			(project "watch-winder"
 				(path "/e4615983-86dc-4379-93ce-772c86486517"
 					(reference "#PWR015")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 162.56 58.42 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "44139c01-a8bd-4ad7-b869-971b5c7d8637")
+		(property "Reference" "#PWR017"
+			(at 162.56 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 162.56 54.864 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 162.56 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 162.56 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 162.56 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6407fef2-9efb-4763-ae96-2e4da909197d")
+		)
+		(instances
+			(project "watch-winder"
+				(path "/e4615983-86dc-4379-93ce-772c86486517"
+					(reference "#PWR017")
 					(unit 1)
 				)
 			)
@@ -3157,6 +3398,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 153.67 63.5 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "79d693ea-61ff-4e3c-8bf8-bcd878193924")
+		(property "Reference" "R6"
+			(at 149.606 62.484 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "220R"
+			(at 159.258 62.23 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 153.67 65.278 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 153.67 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 153.67 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "dfc3d8d0-aad0-41cc-802e-91974eea90b4")
+		)
+		(pin "1"
+			(uuid "41c7c66b-1db5-4394-8d91-48516dfda21f")
+		)
+		(instances
+			(project "watch-winder"
+				(path "/e4615983-86dc-4379-93ce-772c86486517"
+					(reference "R6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 58.42 50.8 0)
 		(unit 1)
@@ -3359,6 +3667,73 @@
 			(project "watch-winder"
 				(path "/e4615983-86dc-4379-93ce-772c86486517"
 					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 153.67 60.96 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "93a5f522-5816-4bca-a5d5-778d6e6e174a")
+		(property "Reference" "R5"
+			(at 149.606 59.69 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "220R"
+			(at 159.004 59.69 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 153.67 62.738 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 153.67 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 153.67 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "cbcb772e-225a-4ffe-8e14-8cda23e2020d")
+		)
+		(pin "1"
+			(uuid "552c60b0-1ea0-4d93-bd2a-edc838f22a84")
+		)
+		(instances
+			(project "watch-winder"
+				(path "/e4615983-86dc-4379-93ce-772c86486517"
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -4182,6 +4557,71 @@
 			(project ""
 				(path "/e4615983-86dc-4379-93ce-772c86486517"
 					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 162.56 66.04 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "efff76d7-1ac0-4d95-ad8f-230344d03f8a")
+		(property "Reference" "#PWR018"
+			(at 156.21 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 159.004 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 162.56 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 162.56 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 162.56 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "0f18d18c-fb17-4043-aa5f-d032b2e747b8")
+		)
+		(instances
+			(project "watch-winder"
+				(path "/e4615983-86dc-4379-93ce-772c86486517"
+					(reference "#PWR018")
 					(unit 1)
 				)
 			)
