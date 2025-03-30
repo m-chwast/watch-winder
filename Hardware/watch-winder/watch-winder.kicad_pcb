@@ -9312,7 +9312,7 @@
 	(footprint "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal"
 		(layer "F.Cu")
 		(uuid "aebaed13-a6a8-4fd6-a723-02b165761cc9")
-		(at 227.87 119.355)
+		(at 227.87 114.92)
 		(descr "Through hole angled pin header, 1x04, 2.54mm pitch, 6mm pin length, single row")
 		(tags "Through hole angled pin header THT 1x04 2.54mm single row")
 		(property "Reference" "J2"
@@ -10119,7 +10119,7 @@
 	(footprint "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Horizontal"
 		(layer "F.Cu")
 		(uuid "afa099a4-d474-4bea-b0b5-f3173aa9f74c")
-		(at 227.87 107.105)
+		(at 227.87 102.67)
 		(descr "Through hole angled pin header, 1x04, 2.54mm pitch, 6mm pin length, single row")
 		(tags "Through hole angled pin header THT 1x04 2.54mm single row")
 		(property "Reference" "J1"
@@ -14106,6 +14106,30 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(gr_rect
+		(start 160 100)
+		(end 210 150)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(fill yes)
+		(layer "In1.Cu")
+		(net 1)
+		(uuid "0aed3cc5-1522-4572-8af2-225dea45a963")
+	)
+	(gr_rect
+		(start 160 100)
+		(end 210 150)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(fill yes)
+		(layer "In2.Cu")
+		(net 1)
+		(uuid "a407c67b-2738-4839-b036-5375c0d3e7d8")
 	)
 	(gr_rect
 		(start 160 100)
